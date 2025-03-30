@@ -19,11 +19,13 @@ const getPostById = async (id) => {
     const result = await pool.query(query, [id])
     return result.rows[0]
 }
+
 const createNewPost = async (title, content, media_url) => {
     const query = 'insert into posts(user_id, title, content, media_url) values ($1, $2, $3, $4) returning *'
     const result = await pool.query(query, [1, title, content, media_url])
     return result.rows[0]
 }
+
 const deletePostById = async (id) => {
     const query = 'delete from posts where id = $1'
     await pool.query(query, [id])
