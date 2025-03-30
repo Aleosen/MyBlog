@@ -4,7 +4,9 @@ import {GrLike} from 'react-icons/gr'
 import { IoTimeOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
-export default function BlogCard({username, title, date, content, likes, views, media_url, onDelete, isDeleting}) {
+import { Link } from 'react-router-dom';
+
+export default function BlogCard({id, username, title, date, content, likes, views, media_url, onDelete, isDeleting}) {
 
     const [settingsOpen, setSettingsOpen] = useState(false)
 
@@ -36,36 +38,25 @@ export default function BlogCard({username, title, date, content, likes, views, 
 
 
   return (
-    <div className='w-full flex flex-col border-t-1 border-b-1 border-gray-300'>
-      <div className="flex justify-between p-5 border-b-1 border-gray-100 relative">
+    <div className='w-full flex flex-col border-t-1 border-b-1 mb-[-1px] px-5 border-gray-300'>
+      <div className="flex justify-between items-center py-3 border-b-1 border-gray-100 relative">
             <h1 className="mr-2 flex items-center"><span className='mr-2'><FaUser/></span>{username}</h1>
             <div className='flex items-center'>
               <span className='mr-2'><IoTimeOutline/></span>
               {getDateDif(date)}
-              <button 
-              ref={buttonRef}
-              className='m-2 text-2xl cursor-pointer' 
-              onClick={()=>setSettingsOpen(!settingsOpen)}>
-                <CiSettings />
-              </button>
-              {settingsOpen && <div ref={settingsRef} className="flex flex-col absolute top-15 right-10 bg-white h-20 shadow-lg">
-                  <button className='p-3 bg-white hover:cursor-pointer'>Редактировать</button>
-                  <button 
-                  onClick={() => {
-                            setSettingsOpen(false)
-                            onDelete()
-                        }}
-                  disabled={isDeleting}
-                  className='p-3 bg-white hover:cursor-pointer text-red-600'>{isDeleting ? 'Удаление...' : 'Удалить'}</button>
-              </div>}
             </div>
       </div>
-      <div className="h-full p-5">
+      <div className="max-h-100 overflow-hidden text-ellipsis line-clamp-4 p-5">
         <h1 className='text-2xl mb-5'>{title}</h1>
-        <span>{content}</span>
+        <span className=''>{content}</span>
       </div>
-      <div className="w-100 p-5">
-        <img className='w-full cover rounded-xl' src={media_url} alt="" />
+      <Link to={`/blogs/${id}`} className="m-5 text-blue-600 w-fit">
+        Читать
+      </Link>
+      <div className="w-full flex justify-center p-5">
+        {media_url && <div className="w-full flex justify-center mb-5 max-h-100 lg:max-h-100 overflow-hidden rounded-xl">
+          <img className='w-full h-full object-cover' src={media_url} alt="" />
+        </div>}
       </div>
       <div className="flex p-5 border-t-1 border-gray-100 justify-between">
         <span className='flex items-center gap-2'>{<GrLike/>} {likes} </span>

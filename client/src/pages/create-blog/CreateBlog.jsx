@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate } from 'react-router-dom'
 import { useState, useRef } from 'react'
 
 export default function CreateBlog() {
@@ -10,7 +10,7 @@ export default function CreateBlog() {
     const [content, setContent] = useState('')
     const [error, setError] = useState('')
     const fileInputRef = useRef(null)
-
+    const navigate = useNavigate()
 
 
     const handleFileChange = (e)=>{
@@ -39,7 +39,7 @@ export default function CreateBlog() {
           setError('Заполните все обязательные поля')
           return
         }
-        const response = await fetch('/api/items', {
+        const response = await fetch('/api/blogs', {
           method:'POST',
           headers:{
             'Content-Type':'application/json'
@@ -54,6 +54,7 @@ export default function CreateBlog() {
         setContent('')
         setPreview(null)
         setError('')
+        navigate('/blogs')
         if(fileInputRef.current) {
           fileInputRef.current.value = ''
         }
@@ -67,7 +68,7 @@ export default function CreateBlog() {
     <main className='w-full min-h-screen'>
       <form 
       onSubmit={handleSubmit} 
-      className="w-250 mx-auto shadow-lg p-10">
+      className="w-full lg:w-250 mx-auto shadow-lg p-10">
         <h1 className="text-3xl opacity-70">Create your blog...</h1>
         {error && <span className='text-red-600'>{error}</span>}
         <div className="my-5 flex flex-col">
@@ -87,7 +88,14 @@ export default function CreateBlog() {
 
         <div className="my-5 flex flex-col">
             <label htmlFor="blog-content" className='text-2xl mb-2'><span className='text-red-500 mr-2'>*</span>Content </label>
-            <textarea value={content} onChange={(e)=>setContent(e.target.value)} placeholder='Input content...' id='blog-content' required type="text" className='h-50 border border-gray-400 px-4 py-2 rounded-[10px]'/>
+            <textarea 
+            value={content} 
+            onChange={(e)=>setContent(e.target.value)} 
+            placeholder='Input content...' 
+            id='blog-content' 
+            required 
+            type="text" 
+            className='h-50 border border-gray-400 px-4 py-2 rounded-[10px]'/>
         </div>
 
         <div className="flex flex-col justify-center items-center p-20 border border-dashed rounded-3xl">
@@ -102,11 +110,11 @@ export default function CreateBlog() {
           />
           </div>
           {preview && (
-          <div className="mt-10 w-100 rounded-2xl relative">
+          <div className="mt-10 w-100 h-100 rounded-2xl relative">
             <img
               src={preview}
               alt="Preview"
-              className='rounded-2xl cover'
+              className='rounded-2xl cover w-100 h-100 '
             />
             <button
               type='button'

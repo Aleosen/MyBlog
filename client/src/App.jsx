@@ -5,6 +5,7 @@ import NavBar from './components/layout/NavBar'
 import Blogs from './pages/blogs/Blogs'
 import CreateBlog from './pages/create-blog/CreateBlog'
 import Footer from './components/layout/Footer'
+import Blog from './pages/blog-info/Blog'
 function App() {
 
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<Main/>}/>
           <Route path='/blogs' element={<Blogs/>}/>
           <Route path='/create-blog' element={<CreateBlog/>}/>
+          <Route path='/blogs/:id' element={<Blog/>}/>
         </Routes>
         </main>
         <Footer/>
