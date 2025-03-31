@@ -9,6 +9,3 @@ html {
     flex-direction: column;
     margin: 0;
   }
-  a:hover {
-    opacity: 0.7;
-  }

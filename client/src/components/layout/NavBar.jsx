@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMenu } from "react-icons/fi";
 import { useState } from 'react';
-
+import './NavBar.css'
 export default function NavBar() {
     const [MenuOpen, setMenuOpen] = useState(false)
     const menuRef = useRef(null)
@@ -19,7 +19,7 @@ export default function NavBar() {
         return ()=>document.removeEventListener('click', handleClickOutside)
     })
   return (
-    <nav className="w-full h-17 sticky top-0 flex items-center justify-between bg-white shadow-lg z-50">
+    <nav className="navbar w-full h-17 sticky top-0 flex items-center justify-between bg-white shadow-lg z-50">
             <Link to='/' className="p-5 lg:hidden">
                 <h1 className="text-3xl lg:text-4xl text-black opacity-70">Bloggy</h1>
             </Link>

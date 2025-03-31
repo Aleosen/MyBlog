@@ -1,0 +1,61 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  .page-item {
+    padding: 6px 0;
+    border-radius: 4px;
+  }
+  .page-link {
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .page-link:hover {
+    opacity: 0.7;
+  }
+  .active {
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+  }
+  .pagination-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .goto-form {
+    display: flex;
+    gap: 5px;
+    margin:20px 0;
+    justify-content: center;
+  }
+  
+  .goto-input {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .goto-button {
+    padding: 5px 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+
+  @media (max-width: 480px) {
+    .goto-input { width: 40px; }
+    .goto-button { padding: 5px; }
+  }

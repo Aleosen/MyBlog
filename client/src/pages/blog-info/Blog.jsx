@@ -206,7 +206,7 @@ const generateSafeHTML = (content) => {
             ) :
             (
               <div className="flex flex-col">
-                <h1 className='text-4xl my-5 border-b-1 border-gray-400 p-5 w-1/2'>{data.title}</h1>
+                <h1 className='text-4xl my-5 border-b-1 border-gray-200 p-5'>{data.title}</h1>
                 <div 
                   id="editor"
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateSafeHTML(tryParseJSON(data.content))) }}

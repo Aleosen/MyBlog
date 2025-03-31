@@ -2,14 +2,20 @@ require('dotenv').config()
 const {Pool} = require('pg')
 const pool = new Pool({connectionString:process.env.DATABASE_URL})
 
-const getAllPosts = async (page, limit) => {
-    const offset = (page - 1) * limit
-    const query = 'select posts.id as post_id, '+
+const getAllPosts = async (page, limit, offset) => {
+    
+    const query = 'select distinct posts.id as post_id, '+
             'posts.content, posts.created_at, posts.title, posts.media_url, posts.likes_count, posts.views_count, ' +
-            'users.id as user_id, users.username from posts inner join users on posts.user_id = users.id'+ 
-            ' ORDER BY posts.created_at DESC LIMIT $1 OFFSET $2'
+            'users.id as user_id, users.username from posts inner join users on posts.user_id = '+
+            'users.id ORDER BY posts.created_at DESC LIMIT $1 OFFSET $2'
     const result = await pool.query(query, [limit, offset])
     return result.rows
+}
+
+const countAllPosts = async () => {
+    const query = 'select COUNT(*) AS total_count from posts'
+    const result = await pool.query(query)
+    return parseInt(result.rows[0].total_count)
 }
 
 const getPostById = async (id) => {
@@ -38,5 +44,5 @@ const updatePostById = async (id, title, content, media_url) => {
 }
 
 module.exports = {
-    getPostById, getAllPosts, createNewPost, deletePostById, updatePostById
+    getPostById, getAllPosts, createNewPost, deletePostById, updatePostById, countAllPosts
 }

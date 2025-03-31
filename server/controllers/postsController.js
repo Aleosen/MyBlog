@@ -3,14 +3,23 @@ const {
     getAllPosts, 
     createNewPost, 
     deletePostById, 
-    updatePostById
+    updatePostById,
+    countAllPosts
 } = require('../models/Post')
 
 const getPosts = async (req, res)=>{
     try {
-        const { page = 1, limit = 10 } = req.query;
-        const posts = await getAllPosts(page, limit)
-        res.json(posts)
+        const page = req.query.page || 1
+        const limit = req.query.limit || 5
+        const offset = (page-1) * limit
+        const posts = await getAllPosts(page, limit, offset)
+        const totalPosts = await countAllPosts()
+        console.log(totalPosts)
+        const totalPages = Math.ceil(totalPosts / limit)
+        res.json({
+            posts,
+            totalPages
+        })
     } catch (error) {
         console.error('Database error:', error);
         res.status(500).json({err:error.message})

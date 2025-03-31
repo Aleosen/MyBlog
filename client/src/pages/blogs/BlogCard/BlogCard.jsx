@@ -80,34 +80,34 @@ const generateSafeHTML = (content) => {
 
 
   return (
-    <div className='w-full flex flex-col border-t-1 border-b-1 mb-[-1px] px-5 border-gray-300'>
-      <div className="flex justify-between items-center py-3 border-b-1 border-gray-100 relative">
+    <div className="blog-card relative py-1 border-b-1 border-gray-100">
+    <Link to={`/blogs/${id}`} className='hover:bg-gray-100/80 hover:cursor-pointer hover:rounded-xl w-full flex flex-col px-5 '>
+      <div className="flex justify-between items-center py-3 relative">
             <h1 className="mr-2 flex items-center"><span className='mr-2'><FaUser/></span>{username}</h1>
             <div className='flex items-center'>
               <span className='mr-2'><IoTimeOutline/></span>
               {getDateDif(date)}
             </div>
       </div>
-      <div className="max-h-100 overflow-hidden text-ellipsis line-clamp-4 p-5">
-        <h1 className='text-2xl mb-5'>{title}</h1>
+      <div className="py-5">
+      <h1 className='text-2xl truncate mb-5'>{title}</h1>
         <div 
           id="editor"
           dangerouslySetInnerHTML={{ __html: cleanHtml }}
-          className="prose"
+          className="prose overflow-hidden text-ellipsis line-clamp-4 break-words"
         />
       </div>
-      <Link to={`/blogs/${id}`} className="m-5 text-blue-600 w-fit text-xl">
+      <span className="hover:opacity-70 my-5 text-blue-600 w-fit text-xl">
         Читать
-      </Link>
-      <div className="w-full flex justify-center p-5">
+      </span>
         {media_url && <div className="w-full flex justify-center mb-5 max-h-100 lg:max-h-150 overflow-hidden rounded-xl">
-          <img className='w-full h-full object-cover' src={media_url} alt="" />
+          <img className='w-full h-full object-cover' loading='lazy' src={media_url} alt="" />
         </div>}
-      </div>
-      <div className="flex p-5 border-t-1 border-gray-100 justify-between">
+      <div className="flex p-5 justify-between">
         <span className='flex items-center gap-2'>{<GrLike/>} {likes} </span>
         <span className='flex items-center gap-2'><FaEye/> {views} </span>
       </div>
-    </div>
+    </Link>
+  </div>
   )
 }

@@ -68,12 +68,12 @@ export default function CreateBlog() {
         <div className="flex justify-between">
           <Link 
           to="/" 
-          className='px-6 py-3 w-40 text-center rounded-full border hover:cursor-pointer m-10 hover:opacity-70'>
+          className='px-1 py-2 w-40 text-center text-white rounded-[4px] bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
             Back
           </Link>
           <button 
           type='submit' 
-          className='px-6 py-3 w-40 rounded-full border hover:cursor-pointer m-10 hover:opacity-70'>
+          className='px-1 py-2 w-40 rounded-[4px] text-white bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
             Create blog
           </button>
         </div>
