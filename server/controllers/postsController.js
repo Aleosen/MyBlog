@@ -9,12 +9,21 @@ const {
 
 const getPosts = async (req, res)=>{
     try {
+        const sort = req.query.sort || 'time'
         const page = req.query.page || 1
-        const limit = req.query.limit || 5
-        const offset = (page-1) * limit
-        const posts = await getAllPosts(page, limit, offset)
-        const totalPosts = await countAllPosts()
-        console.log(totalPosts)
+        const limit = req.query.limit || 10
+        const search = req.query.search || null
+        let tsQuery = null;
+        if (search !== null) {
+            const decodedSearch = decodeURIComponent(search);
+            tsQuery = decodedSearch
+                .split(/\s+/)
+                .filter(term => term.length > 0)
+                .join(' & ');
+        }
+        const offset = (page) * limit
+        const posts = await getAllPosts(tsQuery, limit, sort, offset)
+        const totalPosts = posts.length > 0 ? parseInt(posts[0].total_count) : 0;
         const totalPages = Math.ceil(totalPosts / limit)
         res.json({
             posts,

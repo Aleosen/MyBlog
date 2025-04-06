@@ -2,13 +2,51 @@ require('dotenv').config()
 const {Pool} = require('pg')
 const pool = new Pool({connectionString:process.env.DATABASE_URL})
 
-const getAllPosts = async (page, limit, offset) => {
+const getAllPosts = async (search, limit, sort, offset) => {
     
-    const query = 'select distinct posts.id as post_id, '+
-            'posts.content, posts.created_at, posts.title, posts.media_url, posts.likes_count, posts.views_count, ' +
-            'users.id as user_id, users.username from posts inner join users on posts.user_id = '+
-            'users.id ORDER BY posts.created_at DESC LIMIT $1 OFFSET $2'
-    const result = await pool.query(query, [limit, offset])
+    let orderBy
+    if(search) {
+        orderBy = `
+      ts_rank(
+        to_tsvector('russian', posts.title || ' ' || posts.content), 
+        to_tsquery('russian', $1)
+      ) DESC
+    `
+    }
+
+    switch(sort){
+        case 'time':
+            orderBy=`posts.created_at DESC`
+            break;
+        case 'popularity':
+            orderBy=`posts.views_count DESC`
+            break;
+        default:
+            orderBy=`posts.created_at DESC`
+    }
+
+    const query = `SELECT 
+                        posts.id AS post_id,
+                        posts.content, 
+                        posts.created_at, 
+                        posts.title, 
+                        posts.media_url, 
+                        posts.likes_count, 
+                        posts.views_count,
+                        users.id AS user_id, 
+                        users.username,
+                        COUNT(*) OVER() AS total_count
+                    FROM 
+                        posts 
+                    INNER JOIN 
+                        users ON posts.user_id = users.id
+                    WHERE
+                        ($1::text IS NULL OR 
+                        to_tsvector('russian', posts.title || ' ' || posts.content) @@ to_tsquery('russian', $1))
+                    ORDER BY
+                        ${orderBy}
+                    LIMIT $2 OFFSET $3;`
+    const result = await pool.query(query, [search, limit, offset])
     return result.rows
 }
 
