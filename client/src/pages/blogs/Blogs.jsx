@@ -6,22 +6,26 @@ import { tryParseJSON } from '../../utils/helpers'
 import ReactPaginate from 'react-paginate'
 import './Blog.css'
 import { useNavigate } from 'react-router-dom'
+import SearchComponent from '../../components/ui/SearchComponent'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Blogs() {
-    const [data, setData] = useState([])
-    const [totalPages, setTotalPages] = useState(0);
-    const limit = 5; 
-    const [currentPage, setCurrentPage] = useState( 0); 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || ''
+  const [data, setData] = useState([])
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 10;
+  const [currentPage, setCurrentPage] = useState( 0); 
+  const [inputPage, setInputPage] = useState('');
+  const navigate = useNavigate()
 
-
-    const navigate = useNavigate()
      const fetchPosts = async (page) => {
-        const response = await getPosts(page+1, limit);
+        const encodedQuery = encodeURIComponent(searchQuery)
+        const response = await getPosts(page, limit, 'time', encodedQuery);
         setData(response.posts);
         setTotalPages(response.totalPages);
   };
 
-  const [inputPage, setInputPage] = useState('');
 
   
   const handleGoToPage = (e) => {
@@ -47,15 +51,21 @@ export default function Blogs() {
     navigate(`/blogs?page=${newPage}`);
   };
 
+  const handleSearch = (query) =>{
+
+    setSearchParams({search:query})
+    setCurrentPage(0)
+  }
 
   useEffect(() => {
     fetchPosts(currentPage);
-  }, []);
+  }, [searchQuery, currentPage]);
 
     
   return (
     <div className='w-full'>
-      <div className="w-full md:w-183 mx-auto shadow-lg p-1">
+      <div className="w-full md:w-200 mx-auto shadow-lg p-1">
+      <SearchComponent onSearch={handleSearch} classes={'mb-5 mt-7'}/>
         <ul className='w-full'>
         {data.length>0 ? (data.map(item =>
             <li key={item.post_id}>
@@ -71,7 +81,7 @@ export default function Blogs() {
                 />
             </li>
         )):(
-          <h1 className="text-4xl text-center my-20">There is no blogs yet...</h1>
+          <h1 className="text-4xl text-center my-20">There is nothing found...</h1>
         )}
         </ul>
         <ReactPaginate
@@ -102,7 +112,7 @@ export default function Blogs() {
               placeholder="№"
               className="goto-input"
             />
-            <button type="submit" className="goto-button">
+            <button type="submit" className="goto-button transition-all duration-300">
               Go
             </button>
       </form>

@@ -49,6 +49,7 @@ export default function FileUploader({currentPreview, onPreviewChange}) {
             <button
               type='button'
               onClick={() => {
+                onPreviewChange(null)
                 setPreview(null)
                 if(fileInputRef.current) {
                   fileInputRef.current.value = ''

@@ -20,9 +20,10 @@ export default function CreateBlog() {
 
     const handleSubmit = async(e) => {
       e.preventDefault()
+      
       try {
         if(!title.trim() || !content?.content?.length) {
-          setError('Please, fill all empty fields')
+          setError('Required fields are empty')
           return
         }
         await createPost({title:title.trim(), content:content, media_url:preview})
@@ -41,9 +42,9 @@ export default function CreateBlog() {
     <main className='w-full min-h-screen'>
       <form 
       onSubmit={handleSubmit} 
-      className="w-full lg:w-250 mx-auto shadow-lg p-10">
-        <h1 className="text-3xl opacity-70">Create your blog...</h1>
-        {error && <span className='text-red-600'>{error}</span>}
+      className="w-full lg:w-200 mx-auto shadow-lg p-10">
+        <h1 className="text-3xl opacity-70">New blog</h1>
+        {error && <span className='text-red-600'>*{error}</span>}
         <div className="my-5 flex flex-col">
             <label 
             htmlFor="blog-name" 
@@ -68,13 +69,13 @@ export default function CreateBlog() {
         <div className="flex justify-between">
           <Link 
           to="/" 
-          className='px-1 py-2 w-40 text-center text-white rounded-[4px] bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
+          className='transition-all duration-300 px-1 py-2 w-40 text-center text-white rounded-[4px] bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
             Back
           </Link>
           <button 
           type='submit' 
-          className='px-1 py-2 w-40 rounded-[4px] text-white bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
-            Create blog
+          className='transition-all duration-300 px-1 py-2 w-40 rounded-[4px] text-white bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
+            Create
           </button>
         </div>
 

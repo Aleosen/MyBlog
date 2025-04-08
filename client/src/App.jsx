@@ -7,24 +7,30 @@ import CreateBlog from './pages/create-blog/CreateBlog'
 import Footer from './components/layout/Footer'
 import Blog from './pages/blog-info/Blog'
 import ScrollToTop from './utils/ScrollToTop'
+import Registration from './pages/register/Registration'
+import { AuthProvider } from './context/AuthContext'
+
 function App() {
 
   return (
-    <Router>
-      <ScrollToTop/>
-      <div className="flex flex-col min-h-screen">
-        <NavBar/>
-        <main className="flex-1">
-        <Routes>
-          <Route path='/' element={<Main/>}/>
-          <Route path='/blogs' element={<Blogs/>}/>
-          <Route path='/create-blog' element={<CreateBlog/>}/>
-          <Route path='/blogs/:id' element={<Blog/>}/>
-        </Routes>
-        </main>
-        <Footer/>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <ScrollToTop/>
+        <div className="flex flex-col min-h-screen">
+          <NavBar/>
+          <main className="flex-1">
+          <Routes>
+            <Route path='/' element={<Main/>}/>
+            <Route path='/blogs' element={<Blogs/>}/>
+            <Route path='/create-blog' element={<CreateBlog/>}/>
+            <Route path='/blogs/:id' element={<Blog/>}/>
+            <Route path='/register' element={<Registration/>}/>
+          </Routes>
+          </main>
+          <Footer/>
+        </div>
+      </Router>
+    </AuthProvider>
   )
 }
 

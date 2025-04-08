@@ -4,7 +4,7 @@
     gap: 8px;
     list-style: none;
     padding: 0;
-    margin-top: 20px;
+    margin-top: 50px;
   }
   .page-item {
     padding: 6px 0;
@@ -12,7 +12,7 @@
   }
   .page-link {
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 6px 12px;
     border: 1px solid #ddd;
     cursor: pointer;
   }

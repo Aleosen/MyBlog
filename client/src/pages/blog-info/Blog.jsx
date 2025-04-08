@@ -8,9 +8,7 @@ import { deletePost } from '../../services/postService';
 import FileUploader from '../../components/ui/FileUploader';
 import TextEditor from '../../components/ui/TextEditor';
 import DOMPurify from 'dompurify'
-import { generateHTML } from '@tiptap/html'
-import StarterKit from '@tiptap/starter-kit'
-import TextAlign from '@tiptap/extension-text-align';
+import { generateSafeHTML } from '../../utils/TextFromJSON';
 import { tryParseJSON } from '../../utils/helpers';
 
 import './Blog.css'
@@ -46,40 +44,6 @@ export default function Blog() {
       return () => document.removeEventListener('mousedown', handleClickOutside)
   },[id, settingsOpen])
 
-// 1. Обновляем валидацию контента
-const validateContent = (content) => {
-  // Проверяем базовую структуру
-  if (!content || content?.type !== 'doc' || !Array.isArray(content?.content)) {
-    console.error('Invalid content format:', content)
-    return { type: 'doc', content: [] }
-  }
-  
-  // Фильтруем некорректные узлы
-  const filteredContent = content.content.filter(node => {
-    if (!node.type) {
-      console.warn('Node without type:', node)
-      return false
-    }
-    return true
-  })
-  
-  return { ...content, content: filteredContent }
-}
-
-const generateSafeHTML = (content) => {
-  try {
-    return generateHTML(validateContent(content), [
-      StarterKit,
-      TextAlign.configure({ 
-        types: ['paragraph', 'heading'],
-      })
-    ])
-  } catch (error) {
-    console.error('HTML generation error:', error)
-    return '<p>Error loading content</p>'
-  }
-}
-
     const getDateDif = (old_date) =>{
         const postDate = new Date(old_date)
         const now = new Date();
@@ -110,8 +74,8 @@ const generateSafeHTML = (content) => {
 
     if (!data) return <div className="text-3xl mt-20 text-center">Blog not found</div>
   return (
-    <div className='w-full'>
-      <div className="w-full lg:w-250 mx-auto shadow-lg p-10 mb-20">
+    <div className='w-full break-words'>
+      <div className="w-full lg:w-200 mx-auto shadow-lg p-10 mb-20">
             <div className="flex justify-between relative">
                 <div className="flex gap-2">
                   <h3 className='gap-1 flex items-center opacity-70'><FaUser/>{data.username}</h3>
@@ -195,7 +159,7 @@ const generateSafeHTML = (content) => {
             <div className="flex flex-col">
               <input 
               type='text' 
-              className='text-4xl mb-5 border border-gray-200 rounded-xl p-5 w-1/2' 
+              className='text-4xl mb-5 border border-gray-200 rounded-xl p-5' 
               value={titleValue}
               onChange={(e)=>{setTitleValue(e.target.value)}}
               placeholder='Input title...' 
@@ -217,8 +181,8 @@ const generateSafeHTML = (content) => {
                 </div>}
               </div>
             )}
-            <Link to='/blogs' className='underline text-xl text-blue-600'>
-              &lt; Back to blogs
+            <Link to='/blogs' className='underline text-xl text-blue-600 px-2 py-1'>
+              &lt; Back
             </Link>
       </div>
     </div>

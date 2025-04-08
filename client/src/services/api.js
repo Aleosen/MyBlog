@@ -1,35 +1,32 @@
 const API_BASE_URL = '/api'
 
-export const customFetch = async (url, options = {}) =>{
-    const headers = {
-        'Content-Type' : 'application/json',
-        ...options.headers
-    }
-    const response = await fetch(`${API_BASE_URL}${url}`, {
-        ...options,
-        headers
-    })
-    if (!response.ok) {
-        // Если сервер возвращает ошибку в JSON
-        try {
-            const error = await response.json();
-            throw new Error(error.message || 'Ошибка сети');
-        } catch (e) {
-            // Если сервер вернул ошибку без JSON (например, текст или пустой ответ)
-            throw new Error(await response.text() || 'Ошибка сети');
-        }
-    }
-    const contentLength = response.headers.get('Content-Length');
-    const isEmptyResponse = contentLength === '0' || response.status === 204;
-
-    if (isEmptyResponse) {
-        return null;
-    }
-
+export const customFetch = async (url, options = {}) => {
     try {
-        return await response.json();
-    } catch (e) {
-        console.warn('Невалидный JSON в ответе:', e);
-        return null;
+      const response = await fetch(`${API_BASE_URL}${url}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers
+        }
+      });
+  
+      if (!response.ok) {
+        let errorMessage
+        try {
+          const data = await response.json();
+          if (data.error) errorMessage = data.error;
+        } catch {
+          const text = await response.text();
+          if (text) errorMessage = text;
+        }
+      
+        throw new Error(errorMessage);
+      }
+  
+      return response.status === 204 ? [] : await response.json();
+      
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error; 
     }
-}
+  };

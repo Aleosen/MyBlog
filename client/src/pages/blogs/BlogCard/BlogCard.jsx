@@ -6,11 +6,9 @@ import { FaUser } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify'
-import { generateHTML } from '@tiptap/html'
-import StarterKit from '@tiptap/starter-kit'
-import TextAlign from '@tiptap/extension-text-align';
+import { generateSafeHTML } from '../../../utils/TextFromJSON';
 import './BlogCard.css'
-
+import { getDateDif } from '../../../utils/helpers';
 
 export default function BlogCard({id, username, title, date, content, likes, views, media_url}) {
 
@@ -19,39 +17,6 @@ export default function BlogCard({id, username, title, date, content, likes, vie
     const settingsRef = useRef(null)
     const buttonRef = useRef(null)
 
-// 1. Обновляем валидацию контента
-const validateContent = (content) => {
-  // Проверяем базовую структуру
-  if (!content || content?.type !== 'doc' || !Array.isArray(content?.content)) {
-    console.error('Invalid content format:', content)
-    return { type: 'doc', content: [] }
-  }
-  
-  // Фильтруем некорректные узлы
-  const filteredContent = content.content.filter(node => {
-    if (!node.type) {
-      console.warn('Node without type:', node)
-      return false
-    }
-    return true
-  })
-  
-  return { ...content, content: filteredContent }
-}
-
-const generateSafeHTML = (content) => {
-  try {
-    return generateHTML(validateContent(content), [
-      StarterKit,
-      TextAlign.configure({ 
-        types: ['paragraph', 'heading'],
-      })
-    ])
-  } catch (error) {
-    console.error('HTML generation error:', error)
-    return '<p>Error loading content</p>'
-  }
-}
   const html = generateSafeHTML(content)
   const cleanHtml = DOMPurify.sanitize(html)
 
@@ -68,16 +33,6 @@ const generateSafeHTML = (content) => {
         return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [settingsOpen])
 
-    const getDateDif = (old_date) =>{
-        const postDate = new Date(old_date)
-        const now = new Date();
-        const milliDiff = now - postDate;
-        const hoursDif = milliDiff/(1000*60*60)
-        if(Math.floor(hoursDif)===0) return 'few minutes ago'
-        else if(Math.floor(hoursDif)>=24) return `${postDate.toLocaleDateString()}`
-        else return (Math.floor(hoursDif) + ' hours ago')
-    }
-
 
   return (
     <div className="blog-card relative py-1 border-b-1 border-gray-100">
@@ -90,7 +45,7 @@ const generateSafeHTML = (content) => {
             </div>
       </div>
       <div className="py-5">
-      <h1 className='text-2xl truncate mb-5'>{title}</h1>
+      <h1 className='text-2xl truncate mb-5 font-bold'>{title}</h1>
         <div 
           id="editor"
           dangerouslySetInnerHTML={{ __html: cleanHtml }}
