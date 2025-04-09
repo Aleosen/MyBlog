@@ -9,7 +9,7 @@ import Blog from './pages/blog-info/Blog'
 import ScrollToTop from './utils/ScrollToTop'
 import Registration from './pages/register/Registration'
 import { AuthProvider } from './context/AuthContext'
-
+import Login from './pages/login/Login'
 function App() {
 
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route path='/create-blog' element={<CreateBlog/>}/>
             <Route path='/blogs/:id' element={<Blog/>}/>
             <Route path='/register' element={<Registration/>}/>
+            <Route path='/login' element={<Login/>}/>
           </Routes>
           </main>
           <Footer/>

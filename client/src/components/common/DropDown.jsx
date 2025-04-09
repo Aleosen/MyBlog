@@ -1,16 +1,17 @@
 import React from 'react'
 
-export default function DropDown({title, children}) {
+export default function DropDown({ title, children }) {
   return (
-    <div className='relative group inline-block'>
-      <button className='py-full'>
+    <div className="relative inline-block group">
+      <button className="px-4 py-2 hover:bg-gray-100 transition-colors flex items-center">
         {title}
       </button>
-      <div className="z-10 absolute -left-5 top-full pt-5 w-32 bg-white shadow-lg 
-                      origin-top transform opacity-0
-                      group-hover:opacity-100
-                      transition-all duration-200 ease-out 
-                        rounded-b">
+      <div className="z-20 absolute flex flex-col right-0 top-full pt-3 w-48 bg-white shadow-xl
+                      rounded-b
+                      opacity-0 invisible 
+                      group-hover:opacity-100 group-hover:visible
+                      transition-all duration-200 ease-out delay-100
+                      transform -translate-y-1 group-hover:translate-y-0">
         {children}
       </div>
     </div>

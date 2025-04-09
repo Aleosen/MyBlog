@@ -3,7 +3,6 @@ import icon from '../../../assets/icon.png'
 import { Link, useNavigate } from "react-router-dom";
 import './ModalLogin.css'
 import { useState, useEffect, useRef } from "react";
-import { authUser } from "../../../services/authService";
 import { useAuth } from "../../../context/AuthContext";
 
 export default function ModalLogin({onClose}) {
@@ -27,44 +26,34 @@ export default function ModalLogin({onClose}) {
             setError('')
     }, [loginValue, password])
 
-  useEffect(() => {
-      if (localStorage.getItem('token')) {
-        navigate('/');
-      }
-    }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Submit started')
     setIsLoading(true);
-    
+    setError('');
     if (!loginValue.trim() || !password.trim()) {
       setError('Please fill in all fields');
       setIsLoading(false);
       return;
     }
-
     try {
       console.log(`Sending login`)
-      const data = await authUser(loginValue, password);
+      const result = await login({loginValue, password})
       
-      if (!data.success) {
-        throw new Error(data.message || 'Login failed');
+      if(result.success){
+        if (onClose) onClose(false);
+        navigate('/');
       }
-      
-      localStorage.setItem('token', data.token);
-      console.log('Login success')
-      login({username:loginValue})
-      if (onClose) onClose();
-      navigate('/');
-      
+      else {
+        setError(result.message)
+      }
     } catch (err) {
       setError(err.message || 'Authorization error');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
-    
   };
 
   

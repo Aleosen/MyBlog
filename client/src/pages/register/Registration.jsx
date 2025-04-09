@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FileUploader from '../../components/ui/FileUploader'
 import ModalLogin from '../../components/ui/Modal/ModalLogin'
 import { register } from '../../services/registerService'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 export default function Registration() {
     const [userName, setUserName] = useState('')
     const [email, setEmail] = useState('')
@@ -106,9 +106,8 @@ export default function Registration() {
                 />
         </div>
         <div className="flex justify-between mt-20">
-        <div className="">Have an account?<button type='button' className='text-blue-600 ml-1' onClick={()=>{
-            setModalLogin(true)
-        }}>Login</button></div>
+        <div className="">Have an account?<Link to='/login' className='text-blue-600 ml-1'
+        >Login</Link></div>
         <button type='submit' className='px-4 py-2 bg-blue-600 rounded-[4px] text-white'>
                 Confirm
         </button>

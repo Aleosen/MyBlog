@@ -69,7 +69,7 @@ export default function NavBar() {
                 <h1 className="text-3xl lg:text-4xl text-blue-700 opacity-70">Depositary</h1>
             </Link>
             <div className="hidden w-full lg:flex justify-between items-center mx-10">
-            <Link to='/' className="p-2 flex items-center">
+            <Link to='/' className="p-2 flex items-center ml-10">
                 <img src={icon} alt="icon" loading='lazy' className='mr-2 w-10'/>
                 <h1 className="text-3xl lg:text-4xl text-blue-700 opacity-70">Depositary</h1>
             </Link>
@@ -87,18 +87,18 @@ export default function NavBar() {
                     About
                 </Link>
             </div>
-            <div className="flex items-center gap-6 p-2">
+            <div className="flex items-center gap-6 p-2 mr-10">
             {location.pathname !== '/blogs' || isScrolled ? <SearchComponent classes={'hidden lg:flex '}/> : <div className=""></div>}
             {user ? (
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center'>
                     <DropDown title={
                         <div className="flex items-center">
                             <FaUser className="mr-2" />
                             <span>{user.username}</span>
                         </div>
                     }>
-                        <button className='px-4 py-2'>Profile</button>
-                        <button className='px-4 py-2 text-red-500' onClick={logout}>Logout</button>
+                        <button className='px-6 py-3 m-2 hover:bg-gray-100 text-left'>Profile</button>
+                        <button className='px-6 py-3 m-2 hover:bg-gray-100 text-red-500 text-left' onClick={logout}>Logout</button>
                     </DropDown>
                 </div>
             ):(

@@ -135,22 +135,29 @@ export default function Blog() {
                 {settingsOpen && 
                 <div 
                     ref={settingsRef} 
-                    className={`flex flex-col absolute top-10 right-0 opacity-90 bg-white shadow-lg transition-all duration-500 ease-in-out 
+                    className={`flex w-32 flex-col absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
                     ${settingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'}
                     ${settingsOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
-                                  <button 
-                                  onClick={()=>{
-                                    handleEdit()
-                                  }}
-                                  className='p-2 bg-white hover:cursor-pointer'>
-                                    Редактировать</button>
+                                  
+                                    {isEditing ? (<button 
+                                                    onClick={()=>{
+                                                      setIsEditing(false)
+                                                      setSettingsOpen(false)
+                                                      setError('')
+                                                    }}
+                                                    className='px-6 py-3 bg-white hover:cursor-pointer text-left'>Cancel edit</button>)
+                                                 :(<button 
+                                                    onClick={()=>{
+                                                      handleEdit()
+                                                    }}
+                                                    className='px-6 py-3 bg-white hover:cursor-pointer text-left'>Edit</button>)}
 
                                   <button 
                                   onClick={()=>{
                                     handleDelete(data.post_id)
                                   }}
-                                  className='p-2 bg-white hover:cursor-pointer text-red-600'>
-                                    Удалить</button>
+                                  className='px-6 py-3 bg-white hover:cursor-pointer text-left text-red-600'>
+                                    Delete</button>
                               </div>}
                 </div>
             </div>
