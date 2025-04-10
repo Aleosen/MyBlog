@@ -50,6 +50,10 @@ export default function NavBar() {
           }
         };
       }
+      const handleModalClick = () => {
+        if(location.pathname!=='/login')
+            setModalLogin(true)
+      }
     useEffect(()=>{
         const handleScroll =()=> {
             const scrollPosition = window.scrollY || document.documentElement.scrollTop
@@ -103,7 +107,7 @@ export default function NavBar() {
                 </div>
             ):(
                 <div className="flex gap-2">
-                    <button onClick={()=>setModalLogin(true)}>
+                    <button onClick={handleModalClick}>
                         Login
                     </button>
                     <Link to='/register' className="p-2">

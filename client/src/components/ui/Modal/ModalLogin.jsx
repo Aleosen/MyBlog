@@ -66,7 +66,7 @@ export default function ModalLogin({onClose}) {
           </h1>
           <button className='text-2xl px-2 py-1 bg-gray-300 rounded-full' onClick={()=>onClose?.(false)}><MdClose className='text-white'/></button>
         </div>
-      <h2 className="text-3xl bold mb-10">Login</h2>
+      <h2 className="text-3xl bold mb-7">Login</h2>
         {error && <p className="text-red-500 absolute top-40 left-5">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <input 

@@ -64,9 +64,9 @@ const getPostById = async (id) => {
     return result.rows[0]
 }
 
-const createNewPost = async (title, content, media_url) => {
+const createNewPost = async (title, author_id, content, media_url) => {
     const query = 'insert into posts(user_id, title, content, media_url) values ($1, $2, $3, $4) returning *'
-    const result = await pool.query(query, [1, title, content, media_url])
+    const result = await pool.query(query, [author_id, title, content, media_url])
     return result.rows[0]
 }
 

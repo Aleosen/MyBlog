@@ -4,6 +4,7 @@ import { useState, useEffect} from 'react'
 import { createPost } from '../../services/postService'
 import FileUploader from '../../components/ui/FileUploader'
 import TextEditor from '../../components/ui/TextEditor'
+import {useAuth} from '../../context/AuthContext'
 
 export default function CreateBlog() {
     const [preview, setPreview] = useState(null)
@@ -11,7 +12,7 @@ export default function CreateBlog() {
     const [content, setContent] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
-
+    const {user} = useAuth()
     useEffect(() => {
       if(title.trim() && content?.content?.length > 0) {
         setError('')
@@ -26,7 +27,7 @@ export default function CreateBlog() {
           setError('Required fields are empty')
           return
         }
-        await createPost({title:title.trim(), content:content, media_url:preview})
+        await createPost({title:title.trim(), author_id:user.id, content:content, media_url:preview})
         setTitle('')
         setContent('')
         setPreview(null)

@@ -10,6 +10,7 @@ import ScrollToTop from './utils/ScrollToTop'
 import Registration from './pages/register/Registration'
 import { AuthProvider } from './context/AuthContext'
 import Login from './pages/login/Login'
+import ProtectedRoute from './components/ProtectedRoute'
 function App() {
 
   return (
@@ -22,7 +23,11 @@ function App() {
           <Routes>
             <Route path='/' element={<Main/>}/>
             <Route path='/blogs' element={<Blogs/>}/>
-            <Route path='/create-blog' element={<CreateBlog/>}/>
+            <Route path='/create-blog' element={
+              <ProtectedRoute>
+                <CreateBlog/>
+              </ProtectedRoute>
+              }/>
             <Route path='/blogs/:id' element={<Blog/>}/>
             <Route path='/register' element={<Registration/>}/>
             <Route path='/login' element={<Login/>}/>

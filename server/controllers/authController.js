@@ -7,12 +7,15 @@ const {authUser} = require('../models/Auth')
 const userLogin = async (req, res) => {
     try {
         const {login, password} = req.body
-        console.log(`login: ${login}password: ${password}`)
+        console.log(`login: ${login} password: ${password}`)
         const user = await authUser(login)
-        if(!user) return res.status(401).json({error:'Invalid credentials'})
-        const isValid = bcrypt.compare(password, user.password)
+        console.log(`user: ${user} `)
+        if(!user.rows.length) return res.status(401).json({error:'Invalid credentials'})
+        const userData = user.rows[0]
+        const isValid = await bcrypt.compare(password, userData.password_hash)
+        console.log(`is valid: ${isValid}`)
         if(!isValid) return res.status(401).json({error:'Invalid credentials'})
-        const token = jwt.sign({ id: user.id, username: user.username }, secret, { expiresIn: '7d' });
+        const token = jwt.sign({ id: userData.id, username: userData.username }, secret, { expiresIn: '7d' });
         res.cookie('token', token, {
             httpOnly:true,
             sameSite:'Strict',

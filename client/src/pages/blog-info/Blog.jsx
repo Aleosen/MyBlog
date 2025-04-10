@@ -10,7 +10,7 @@ import TextEditor from '../../components/ui/TextEditor';
 import DOMPurify from 'dompurify'
 import { generateSafeHTML } from '../../utils/TextFromJSON';
 import { tryParseJSON } from '../../utils/helpers';
-
+import {useAuth} from '../../context/AuthContext'
 import './Blog.css'
 
 export default function Blog() {
@@ -25,7 +25,8 @@ export default function Blog() {
     const settingsRef = useRef(null)
     const buttonRef = useRef(null)
     const navigate = useNavigate()
-          
+    const {user} = useAuth()
+
     useEffect(()=>{
       const fetchPost = async () => {
       const result = await getPost(id)
@@ -127,15 +128,15 @@ export default function Blog() {
                 </div>
                 <div className="flex">
                 <h3 className='gap-1 flex items-center opacity-70'><IoTimeOutline/>{getDateDif(data.created_at)}</h3>
-                <button className='text-2xl ml-2 hover:cursor-pointer'
+                {user?.id===data.user_id && <button className='text-2xl ml-2 hover:cursor-pointer'
                 ref={buttonRef}
-              onClick={()=>setSettingsOpen(!settingsOpen)}>
+                onClick={()=>setSettingsOpen(!settingsOpen)}>
                     <FiMoreVertical/>
-                </button>
+                </button>}
                 {settingsOpen && 
                 <div 
                     ref={settingsRef} 
-                    className={`flex w-32 flex-col absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
+                    className={`flex w-32 flex-col rounded-b absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
                     ${settingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'}
                     ${settingsOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
                                   
@@ -145,18 +146,18 @@ export default function Blog() {
                                                       setSettingsOpen(false)
                                                       setError('')
                                                     }}
-                                                    className='px-6 py-3 bg-white hover:cursor-pointer text-left'>Cancel edit</button>)
+                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left'>Cancel edit</button>)
                                                  :(<button 
                                                     onClick={()=>{
                                                       handleEdit()
                                                     }}
-                                                    className='px-6 py-3 bg-white hover:cursor-pointer text-left'>Edit</button>)}
+                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left'>Edit</button>)}
 
                                   <button 
                                   onClick={()=>{
                                     handleDelete(data.post_id)
                                   }}
-                                  className='px-6 py-3 bg-white hover:cursor-pointer text-left text-red-600'>
+                                  className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left text-red-600'>
                                     Delete</button>
                               </div>}
                 </div>

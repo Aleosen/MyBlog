@@ -1,15 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { authUser } from '../../services/authService'
 
 export default function Login() {
     const [isLoading, setIsLoading] = useState(false)
     const [loginValue, setLoginValue] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-    const navigate = useNavigate()
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from || '/';
+
+  const handleLoginSuccess = () => {
+    navigate(from, { replace: true });
+  };
   
     const {login} = useAuth()
   
@@ -33,7 +38,7 @@ export default function Login() {
           const result = await login({loginValue, password})
           
           if(result.success){
-            navigate('/');
+            handleLoginSuccess()
           }
         } catch (err) {
           setError(err.message || 'Authorization error');
@@ -44,11 +49,11 @@ export default function Login() {
       };
 
   return (
-    <div className='w-full lg:w-200 mx-auto lg:flex block shadow-lg p-25'>
+    <div className='w-full lg:w-200 mx-auto lg:flex block shadow-lg p-20'>
       <form onSubmit={handleSubmit} className="lg:w-150 w-full lg:border-r-1 lg:border-gray-200 lg:pr-10 pb-10 relative">
       <h1 className="text-3xl opacity-70">Login</h1>
-      {error && <p className='absolute top-10 left-0 text-red-500'>{error}</p>}
-        <div className="pt-10">
+      {error && <p className='absolute top-9 left-0 text-red-500'>{error}</p>}
+        <div className="pt-8">
             <input 
             type="text" 
             value={loginValue}
@@ -64,7 +69,7 @@ export default function Login() {
                 placeholder='Password...' 
                 className='px-4 py-2 border border-gray-200 w-full rounded-xl'/>
         </div>
-        <div className="flex justify-between my-5">
+        <div className="flex justify-between my-7">
           <div className="flex items-center gap-2">
             <input id="remember" type="checkbox" />
             <label htmlFor="remember">Remember</label>

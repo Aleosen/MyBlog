@@ -3,7 +3,7 @@ const {Pool} = require('pg')
 const pool = new Pool({connectionString:process.env.DATABASE_URL})
 
 const register = async(username, email, password) => {
-    const query = `INSERT INTO USERS (username, email, password) values ($1, $2, $3) returning *`
+    const query = `INSERT INTO USERS (username, email, password_hash) values ($1, $2, $3) returning *`
 
     const result = await pool.query(query, [username, email, password])
     return result.rows[0]

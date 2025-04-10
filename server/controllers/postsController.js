@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+
 const {
     getPostById, 
     getAllPosts, 
@@ -37,8 +39,11 @@ const getPosts = async (req, res)=>{
 
 const createPost = async(req, res)=> {
     try {
-        const {title, content, media_url} = req.body
-        const newPost = await createNewPost(title, content, media_url)
+        const token = req.cookies.token;
+        if (!token) return res.status(401).json({ error: 'Unauthorized' });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const {title, author_id, content, media_url} = req.body
+        const newPost = await createNewPost(title, author_id, content, media_url)
         res.json(newPost)
     } catch (err) {
         console.error('Ошибка SQL:', err); 
