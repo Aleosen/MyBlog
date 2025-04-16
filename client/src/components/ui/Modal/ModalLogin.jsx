@@ -94,7 +94,7 @@ export default function ModalLogin({onClose}) {
         </div>
           <button 
           type="submit"
-          className='w-full px-4 py-2 bg-blue-600 text-white rounded-[4px]' 
+          className='hover:opacity-70 hover:cursor-pointer w-full px-4 py-2 bg-blue-600 text-white rounded-[4px]' 
           disabled={isLoading}>
             {isLoading?<div>Loading...</div>:<div>Submit</div>}
           </button>

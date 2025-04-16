@@ -8,6 +8,7 @@ import './Blog.css'
 import { useNavigate } from 'react-router-dom'
 import SearchComponent from '../../components/ui/SearchComponent'
 import { useSearchParams } from 'react-router-dom'
+import FilterPanel from './filters/FilterPanel'
 
 export default function Blogs() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -63,8 +64,9 @@ export default function Blogs() {
 
     
   return (
-    <div className='w-full'>
-      <div className="w-full md:w-200 mx-auto shadow-lg p-1">
+    <div className='w-full relative'>
+      <FilterPanel/>
+      <div className="w-full md:w-150 xl:w-200 mx-auto shadow-lg p-1">
       <SearchComponent onSearch={handleSearch} classes={'mb-5 mt-7'}/>
         <ul className='w-full'>
         {data.length>0 ? (data.map(item =>
@@ -78,6 +80,7 @@ export default function Blogs() {
                 likes={item.likes_count}
                 views={item.views_count} 
                 media_url={item.media_url}
+                categories={item.categories}
                 />
             </li>
         )):(

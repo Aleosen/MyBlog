@@ -11,6 +11,8 @@ export default function Login() {
     const location = useLocation();
     const navigate = useNavigate();
     const from = location.state?.from || '/';
+    const [rememberMe, setRememberMe] = useState(false)
+
 
   const handleLoginSuccess = () => {
     navigate(from, { replace: true });
@@ -35,7 +37,8 @@ export default function Login() {
         }
         try {
           console.log(`Sending login`)
-          const result = await login({loginValue, password})
+          console.log(`remember: ${rememberMe}`)
+          const result = await login({loginValue, password, rememberMe})
           
           if(result.success){
             handleLoginSuccess()
@@ -71,7 +74,7 @@ export default function Login() {
         </div>
         <div className="flex justify-between my-7">
           <div className="flex items-center gap-2">
-            <input id="remember" type="checkbox" />
+            <input id="remember" type="checkbox" checked={rememberMe} onChange={(e)=>setRememberMe(e.target.checked)}/>
             <label htmlFor="remember">Remember</label>
           </div>
           <Link to='/login/password-recover' className='text-blue-600'>
@@ -80,7 +83,7 @@ export default function Login() {
         </div>
         <button 
           type="submit"
-          className='w-full px-4 py-2 bg-blue-600 text-white rounded-[4px]' 
+          className='w-full px-4 py-2 bg-blue-600 text-white rounded-[4px] hover:cursor-pointer' 
           disabled={isLoading}>
             {isLoading?<div>Loading...</div>:<div>Submit</div>}
           </button>

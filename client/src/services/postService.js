@@ -13,12 +13,13 @@ export const deletePost = (id) => customFetch(`/blogs/${id}`, {
 
 export const getPost = (id) => customFetch(`/blogs/${id}`)
 
-export const updatePost = (id, newTitle, newContent, newMedia_url) => 
+export const updatePost = (id, newTitle, newContent, newMedia_url, categories) => 
     customFetch(`/blogs/${id}`, {
         method: 'PUT',
         body: JSON.stringify({ 
             title: newTitle, 
             content: newContent, 
-            media_url: newMedia_url 
+            media_url: newMedia_url,
+            categories: categories
         })
     });

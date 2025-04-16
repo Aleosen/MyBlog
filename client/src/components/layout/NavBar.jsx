@@ -101,13 +101,13 @@ export default function NavBar() {
                             <span>{user.username}</span>
                         </div>
                     }>
-                        <button className='px-6 py-3 m-2 hover:bg-gray-100 text-left'>Profile</button>
-                        <button className='px-6 py-3 m-2 hover:bg-gray-100 text-red-500 text-left' onClick={logout}>Logout</button>
+                        <button className='px-6 py-3 m-2 hover:cursor-pointer hover:bg-gray-100 text-left'>Profile</button>
+                        <button className='px-6 py-3 m-2 hover:cursor-pointer hover:bg-gray-100 text-red-500 text-left' onClick={logout}>Logout</button>
                     </DropDown>
                 </div>
             ):(
                 <div className="flex gap-2">
-                    <button onClick={handleModalClick}>
+                    <button className="hover:cursor-pointer hover:opacity-70" onClick={handleModalClick}>
                         Login
                     </button>
                     <Link to='/register' className="p-2">

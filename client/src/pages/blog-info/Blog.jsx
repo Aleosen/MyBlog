@@ -11,6 +11,7 @@ import DOMPurify from 'dompurify'
 import { generateSafeHTML } from '../../utils/TextFromJSON';
 import { tryParseJSON } from '../../utils/helpers';
 import {useAuth} from '../../context/AuthContext'
+import CategoriesComponent from '../../components/ui/CategoriesComponent'
 import './Blog.css'
 
 export default function Blog() {
@@ -19,6 +20,7 @@ export default function Blog() {
     const [settingsOpen, setSettingsOpen] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
     const [titleValue, setTitleValue] = useState('')
+    const [categories, setCategories] = useState([])
     const [contentValue, setContentValue] = useState('')
     const [error, setError] = useState('')
     const [image, setImage] = useState(null)
@@ -31,6 +33,7 @@ export default function Blog() {
       const fetchPost = async () => {
       const result = await getPost(id)
       setData(result)
+      setCategories(result.categories)
       }
       fetchPost()
       const handleClickOutside = (e) => {
@@ -89,7 +92,7 @@ export default function Blog() {
                         const isEmptyContent = !contentValue?.content?.some(
                           item => item.content?.length > 0 || item.text?.trim().length > 0
                         );
-                        if(!titleValue.trim() || isEmptyContent) {
+                        if(!titleValue.trim() || isEmptyContent || categories?.length===0) {
                           setError('Please, fill all empty fields')
                           return
                         }
@@ -98,7 +101,8 @@ export default function Blog() {
                             data.post_id, 
                             titleValue, 
                             contentValue, 
-                            image
+                            image,
+                            categories
                         );
                         console.log('Update result:', result);
                         setError('')
@@ -107,7 +111,8 @@ export default function Blog() {
                           ...result, 
                           title: result.title || titleValue, 
                           content: result.content || contentValue,
-                          media_url: result.media_url || image
+                          media_url: result.media_url || image,
+                          categories: result.categories || categories
                       }));
                         
                     } catch (err) {
@@ -136,7 +141,7 @@ export default function Blog() {
                 {settingsOpen && 
                 <div 
                     ref={settingsRef} 
-                    className={`flex w-32 flex-col rounded-b absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
+                    className={`flex w-40 z-20 flex-col rounded-b absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
                     ${settingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'}
                     ${settingsOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
                                   
@@ -167,17 +172,23 @@ export default function Blog() {
             <div className="flex flex-col">
               <input 
               type='text' 
-              className='text-4xl mb-5 border border-gray-200 rounded-xl p-5' 
+              className='mb-5 bg-gray-100 rounded-[10px] px-4 py-2 outline-none' 
               value={titleValue}
               onChange={(e)=>{setTitleValue(e.target.value)}}
               placeholder='Input title...' 
               required/>
+              <CategoriesComponent items={data.categories} setCategories={setCategories}/>
               <TextEditor onChange={setContentValue} contentValue={tryParseJSON(data.content)} error={!!error}/>
               <FileUploader onPreviewChange={setImage} currentPreview={data.media_url}/>
             </div>
             ) :
             (
               <div className="flex flex-col">
+                <div className="flex flex-wrap gap-2">
+                  {data.categories.map((item, index) => (
+                    <div key={index} style={{backgroundColor:item.color}} className="rounded-3xl px-3 py-1.5 text-white text-[12px]">{item.name}</div>
+                  ))}
+                </div>
                 <h1 className='text-4xl my-5 border-b-1 border-gray-200 p-5'>{data.title}</h1>
                 <div 
                   id="editor"

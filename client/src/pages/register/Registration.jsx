@@ -108,7 +108,7 @@ export default function Registration() {
         <div className="flex justify-between mt-20">
         <div className="">Have an account?<Link to='/login' className='text-blue-600 ml-1'
         >Login</Link></div>
-        <button type='submit' className='px-4 py-2 bg-blue-600 rounded-[4px] text-white'>
+        <button type='submit' className='hover:opacity-70 hover:cursor-pointer px-4 py-2 bg-blue-600 rounded-[4px] text-white'>
                 Confirm
         </button>
         </div>

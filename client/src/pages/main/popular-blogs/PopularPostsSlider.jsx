@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { getPosts } from '../../../services/postService';
 import { Link } from 'react-router-dom';
-import {FaEye} from 'react-icons/fa'
-import {GrLike} from 'react-icons/gr'
+import {GoEye} from 'react-icons/go'
+import {FcLike} from 'react-icons/fc'
 import { IoTimeOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import DOMPurify from 'dompurify'
 import { generateSafeHTML } from '../../../utils/TextFromJSON';
 import { tryParseJSON } from '../../../utils/helpers';
-
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function LastPostsSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,11 +53,13 @@ export default function LastPostsSlider() {
         );
     };
     const fetchPosts = async () => {
-        const response = await getPosts(1, 5, 'time', '');
+        const response = await getPosts(0, 5, 'popularity', '');
         setData(response.posts);
+        console.log(response)
     }
     useEffect(()=>{
         fetchPosts()
+        console.log(data)
     },[])
     useEffect(() => {
         if(autoPlay) {
@@ -82,7 +85,7 @@ export default function LastPostsSlider() {
   return (
     <section className='mx-auto p-5 select-none'>
         <h1 className='text-3xl font-bold mt-20 mb-10'>
-            Last pages
+            Popular trends
         </h1>
         <div className="relative overflow-hidden w-full">
       <div 
@@ -100,7 +103,7 @@ export default function LastPostsSlider() {
             style={{ width: `${100}%` }}
           >
             {/* Контент слайда */}
-            <div className="relative mx-2 p-10 bg-white rounded-lg shadow-md h-120 lg:h-150"
+            <div className="relative mx-2 p-10 bg-gray-50 rounded-lg shadow-md h-120 lg:h-150"
                 style={{ width: `${100/5-1}%`}}
                 onClick={handleSlideClick}
                 onMouseEnter={()=>setAutoPlay(false)}
@@ -109,11 +112,18 @@ export default function LastPostsSlider() {
               <span className="flex items-center gap-2"><FaUser/>{item.username}</span>
                 <span className="flex items-center gap-2"><IoTimeOutline/>{getDateDif(item.created_at)}</span>
               </div>
-              <h3 className="text-xl font-bold mt-2 mb-5">{item.title}</h3>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {item.categories.map((el, i)=>(
+                  <div key={i} style={{backgroundColor:el.color}}className="px-2 py-1 rounded-2xl text-[12px] text-white">
+                    {el.name}
+                  </div>
+                ))}
+              </div>
+              <h3 className="text-xl font-bold mt-5 mb-5">{item.title}</h3>
               <div 
                 id="editor"
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(generateSafeHTML(tryParseJSON(item.content))) }}
-                className="prose overflow-hidden text-ellipsis line-clamp-6 lg:line-clamp-10 break-words"
+                className="prose overflow-hidden text-ellipsis line-clamp-6 lg:line-clamp-9 break-words"
               />
               <div className="absolute bottom-0 right-0 left-0 p-10">
                 <div className="flex mt-2 flex-col">
@@ -125,8 +135,8 @@ export default function LastPostsSlider() {
                       </Link>
                     </div>
                     <div className="flex justify-between">
-                        <span className="flex items-center gap-2"><GrLike/>{item.likes_count}</span>
-                        <span className='flex items-center gap-2'><FaEye/>{item.views_count}</span>
+                        <span className="flex items-center gap-2"><FcLike className='text-xl'/>{item.likes_count}</span>
+                        <span className='flex items-center gap-2'><GoEye className='text-xl'/>{item.views_count}</span>
                     </div>
                 </div>
                 </div>
@@ -136,13 +146,13 @@ export default function LastPostsSlider() {
       </div>
       <button 
         onClick={()=> {prevSlide(); handleManualNavigation()}}
-        className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 py-2 px-4 rounded-full shadow-lg hover:bg-white hover:py-3 hover:px-5">
-        &lsaquo;
+        className="cursor-pointer absolute hidden lg:flex lg:left-3 top-1/2 -translate-y-1/2 text-white bg-blue-500/80 py-2 px-2 rounded-full shadow-lg hover:bg-blue-500 hover:py-2.25 hover:px-2.25">
+        <FaArrowLeft/>
       </button>
       <button 
         onClick={()=> {nextSlide(); handleManualNavigation()}}
-        className="cursor-pointer absolute right-4 lg:right-10 top-1/2 -translate-y-1/2 bg-white/80 py-2 px-4 rounded-full shadow-lg hover:bg-white  hover:py-3 hover:px-5">
-        &rsaquo;
+        className="cursor-pointer absolute hidden lg:flex lg:right-9 top-1/2 -translate-y-1/2 text-white bg-blue-500/80 py-2 px-2 rounded-full shadow-lg hover:bg-blue-500  hover:py-2.25 hover:px-2.25">
+        <FaArrowRight/>
       </button>
       <div className="flex justify-center space-x-2 mt-4">
         {data.map((_, index) => (

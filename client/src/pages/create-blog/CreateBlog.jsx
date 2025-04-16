@@ -5,12 +5,14 @@ import { createPost } from '../../services/postService'
 import FileUploader from '../../components/ui/FileUploader'
 import TextEditor from '../../components/ui/TextEditor'
 import {useAuth} from '../../context/AuthContext'
+import CategoriesComponent from '../../components/ui/CategoriesComponent'
 
 export default function CreateBlog() {
     const [preview, setPreview] = useState(null)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [error, setError] = useState('')
+    const [categories, setCategories] = useState([])
     const navigate = useNavigate()
     const {user} = useAuth()
     useEffect(() => {
@@ -23,11 +25,11 @@ export default function CreateBlog() {
       e.preventDefault()
       
       try {
-        if(!title.trim() || !content?.content?.length) {
+        if(!title.trim() || !content?.content?.length || categories?.length === 0) {
           setError('Required fields are empty')
           return
         }
-        await createPost({title:title.trim(), author_id:user.id, content:content, media_url:preview})
+        await createPost({title:title.trim(), author_id:user.id, content:content, media_url:preview, categories:categories})
         setTitle('')
         setContent('')
         setPreview(null)
@@ -57,14 +59,14 @@ export default function CreateBlog() {
             placeholder='Input title...' 
             id='blog-name' 
             type="text" 
-            className='border border-[#adb5bd] px-4 py-2 rounded-[10px]'/>
+            className='px-4 py-2 rounded-[10px] bg-gray-100 outline-none'/>
         </div>
 
+        <CategoriesComponent setCategories={setCategories}/>
         <div className="my-5 flex flex-col">
             <label htmlFor="blog-content" className='text-2xl mb-2'><span className='text-red-500 mr-2'>*</span>Content </label>
             <TextEditor onChange={setContent}/>
         </div>
-
         <FileUploader currentPreview={null} onPreviewChange={setPreview}/>
 
         <div className="flex justify-between">

@@ -26,8 +26,9 @@ export const AuthProvider = ({children}) =>{
         updateUser()
     }, [])
 
-    const login = async ({loginValue, password}) =>{
-            const data = await authUser(loginValue, password);
+    const login = async ({loginValue, password, rememberMe}) =>{
+            console.log(`reme: ${rememberMe}`)
+            const data = await authUser(loginValue, password, rememberMe);
             if (data.success) {
                 await updateUser()
             }
