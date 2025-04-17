@@ -6,7 +6,7 @@ export default function ClickableDropDown({title, children}) {
   return (
     <div className='mb-5'>
         <button type='button' className='flex items-center hover:cursor-pointer' onClick={()=>setIsOpen(!isOpen)}>
-            {isOpen ? <span className='mr-1'><IoMdArrowDropup/></span> : <span className='mr-1'><IoMdArrowDropdown/></span>}{title}
+        {title}{isOpen ? <span className='mr-1'><IoMdArrowDropup/></span> : <span className='mr-1'><IoMdArrowDropdown/></span>}
         </button>
         {isOpen && <div className="flex flex-col duration-300 transition-all mt-2">
             {children}

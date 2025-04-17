@@ -1,6 +1,9 @@
 import { customFetch } from "./api";
 
-export const getPosts = (page,limit,desc, search) => customFetch(`/blogs?page=${page}&limit=${limit}&sort=${desc}&search=${search}`)
+export const getPosts = (page,limit,filter, search) => {
+    const filterString = encodeURIComponent(JSON.stringify(filter));
+    return customFetch(`/blogs?page=${page}&limit=${limit}&filter=${filterString}&search=${search}`)
+}
 
 export const createPost = (data) => customFetch('/blogs', {
     method:'POST',

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef} from 'react';
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import {getCategories} from '../../services/categoriesService'
 import { IoMdCloseCircleOutline } from "react-icons/io";
-export default function SearchComponent({classes, items, setCategories}) {
+export default function SearchComponent({classes, items, setCategories, resetVisible, selectedItemsVisible}) {
     const [inputValue, setInputValue] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [data, setData] = useState([])
@@ -12,11 +12,9 @@ export default function SearchComponent({classes, items, setCategories}) {
     const handleFetch = async () => {
         try {
             const result = await getCategories(inputValue.trim())
-            console.log(selectedItems)
             const idsFromSelectedItems = new Set(selectedItems.map(item=>item.id))
-            const items = result.filter(item => !idsFromSelectedItems.has(item.id))
-            console.log(items)
-            setData(items)
+            const els = result.filter(item => !idsFromSelectedItems.has(item.id))
+            setData(els)
         } catch (error) {
             console.log(error)
         }
@@ -49,7 +47,6 @@ export default function SearchComponent({classes, items, setCategories}) {
         setSelectedItems(prev => (prev.filter(element => element.id!==item.id)))
         setIsOpen(false)
         setData(prev => [...prev, item])
-        console.log(item)
     }
     const handleReset = () => {
         setData([])
@@ -57,20 +54,20 @@ export default function SearchComponent({classes, items, setCategories}) {
         handleFetch()
     }
     return (
-        <div className='relative mb-10 '>
-            <div className="flex justify-between items-center mb-5">
-                <h1 className='text-2xl'><span className='text-red-500 mr-2'>*</span>Categories</h1>
-                {selectedItems?.length>0 && 
+        <div className='relative mb-5 '>
+            {selectedItems?.length > 0 && resetVisible!==false ? (
+            <div className="flex justify-end items-center ">
                 <button 
                     type='button'
                     onClick={handleReset}
                     className='underline text-blue-500 hover:cursor-pointer hover:opacity-70 mb-2'>
-                        Reset
-                </button>}
+                    Reset
+                </button>
             </div>
+            ) : null}
             
             <div className="flex flex-wrap gap-2 mb-5">
-                {selectedItems?.map((item,index)=>(
+                {selectedItemsVisible!==false && selectedItems?.map((item,index)=>(
                     <div key={index} className="px-4 py-2 rounded-4xl bg-gray-100 w-fit flex justify-between items-center ">
                         <span className='ml-2'>{item.name}</span>
                         <button 

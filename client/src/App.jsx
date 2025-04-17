@@ -11,11 +11,16 @@ import Registration from './pages/register/Registration'
 import { AuthProvider } from './context/AuthContext'
 import Login from './pages/login/Login'
 import ProtectedRoute from './components/ProtectedRoute'
+import { useLocation } from 'react-router-dom'
 function App() {
+  const location = useLocation();
+
+    // Укажи путь страницы, где нужно скрыть футер
+    const hideFooterOnPaths = ["/blogs"];
+    const shouldHideFooter = hideFooterOnPaths.includes(location.pathname);
 
   return (
     <AuthProvider>
-      <Router>
         <ScrollToTop/>
         <div className="flex flex-col min-h-screen">
           <NavBar/>
@@ -33,9 +38,8 @@ function App() {
             <Route path='/login' element={<Login/>}/>
           </Routes>
           </main>
-          <Footer/>
+          {!shouldHideFooter && <Footer/>}
         </div>
-      </Router>
     </AuthProvider>
   )
 }

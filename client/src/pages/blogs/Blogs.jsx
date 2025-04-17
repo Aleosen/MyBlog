@@ -4,7 +4,7 @@ import BlogCard from './BlogCard/BlogCard'
 import { getPosts } from '../../services/postService'
 import { tryParseJSON } from '../../utils/helpers'
 import ReactPaginate from 'react-paginate'
-import './Blog.css'
+import './Blogs.css'
 import { useNavigate } from 'react-router-dom'
 import SearchComponent from '../../components/ui/SearchComponent'
 import { useSearchParams } from 'react-router-dom'
@@ -18,11 +18,15 @@ export default function Blogs() {
   const limit = 10;
   const [currentPage, setCurrentPage] = useState( 0); 
   const [inputPage, setInputPage] = useState('');
+  const [filters, setFilters] = useState({date:'All', sort:'Default', categories:[]})
+
+
   const navigate = useNavigate()
 
      const fetchPosts = async (page) => {
         const encodedQuery = encodeURIComponent(searchQuery)
-        const response = await getPosts(page, limit, 'time', encodedQuery);
+        console.log(filters)
+        const response = await getPosts(page, limit, filters, encodedQuery);
         setData(response.posts);
         setTotalPages(response.totalPages);
   };
@@ -60,13 +64,15 @@ export default function Blogs() {
 
   useEffect(() => {
     fetchPosts(currentPage);
-  }, [searchQuery, currentPage]);
+  }, [searchQuery, currentPage, filters]);
 
-    
+  useEffect(()=>{
+    console.log(filters)
+  },[filters])
   return (
     <div className='w-full relative'>
-      <FilterPanel/>
-      <div className="w-full md:w-150 xl:w-200 mx-auto shadow-lg p-1">
+      <FilterPanel setFilters={setFilters}/>
+      <div className="w-full md:w-150 xl:w-200 mx-auto shadow-lg p-1 rounded-b-3xl">
       <SearchComponent onSearch={handleSearch} classes={'mb-5 mt-7'}/>
         <ul className='w-full'>
         {data.length>0 ? (data.map(item =>

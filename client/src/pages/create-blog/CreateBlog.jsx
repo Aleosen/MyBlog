@@ -46,7 +46,7 @@ export default function CreateBlog() {
       <form 
       onSubmit={handleSubmit} 
       className="w-full lg:w-200 mx-auto shadow-lg p-10">
-        <h1 className="text-3xl opacity-70">New blog</h1>
+        <h1 className="text-3xl">New blog</h1>
         {error && <span className='text-red-600'>*{error}</span>}
         <div className="my-5 flex flex-col">
             <label 
@@ -61,7 +61,7 @@ export default function CreateBlog() {
             type="text" 
             className='px-4 py-2 rounded-[10px] bg-gray-100 outline-none'/>
         </div>
-
+        <h1 className='text-2xl'><span className='text-red-500 mr-2'>*</span>Categories</h1>
         <CategoriesComponent setCategories={setCategories}/>
         <div className="my-5 flex flex-col">
             <label htmlFor="blog-content" className='text-2xl mb-2'><span className='text-red-500 mr-2'>*</span>Content </label>

@@ -9,6 +9,14 @@ import ModalLogin from '../ui/Modal/ModalLogin'
 import { useAuth } from '../../context/AuthContext';
 import { FaUser } from 'react-icons/fa';
 import DropDown from '../common/DropDown';
+import { IoMdHome } from "react-icons/io";
+import { FaBlogger } from "react-icons/fa6";
+import { FaPenAlt } from "react-icons/fa";
+import { IoIosInformationCircle } from "react-icons/io";
+import { IoLogOut } from "react-icons/io5";
+import { IoSettings } from "react-icons/io5";
+import { IoLogIn } from "react-icons/io5";
+import { FaUserPlus } from "react-icons/fa";
 
 export default function NavBar() {
     const [MenuOpen, setMenuOpen] = useState(false)
@@ -78,17 +86,17 @@ export default function NavBar() {
                 <h1 className="text-3xl lg:text-4xl text-blue-700 opacity-70">Depositary</h1>
             </Link>
             <div className="flex gap-6">
-            <Link to='/' className="p-2">
-                    Main
+                <Link to='/' className="p-2 flex items-center gap-1">
+                    <IoMdHome/> Main
                 </Link>
-                <Link to='/blogs' className="p-2">
-                    Blogs
+                <Link to='/blogs' className="p-2 flex items-center gap-1">
+                    <FaBlogger/> Blogs
                 </Link>
-                <Link to='/create-blog' className='border-b-1 p-2'>
-                    Write
+                <Link to='/create-blog' className='border-b-1 p-2 flex items-center gap-1'>
+                    <FaPenAlt/> Write
                 </Link>
-                <Link to='/about' className="p-2">
-                    About
+                <Link to='/about' className="p-2 flex items-center gap-1">
+                    <IoIosInformationCircle/> About
                 </Link>
             </div>
             <div className="flex items-center gap-6 p-2 mr-10">
@@ -101,17 +109,18 @@ export default function NavBar() {
                             <span>{user.username}</span>
                         </div>
                     }>
-                        <button className='px-6 py-3 m-2 hover:cursor-pointer hover:bg-gray-100 text-left'>Profile</button>
-                        <button className='px-6 py-3 m-2 hover:cursor-pointer hover:bg-gray-100 text-red-500 text-left' onClick={logout}>Logout</button>
+                        <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-left'><FaUser/>Profile</button>
+                        <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-left'><IoSettings/>Settings</button>
+                        <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-red-500 text-left' onClick={logout}><IoLogOut/>Logout</button>
                     </DropDown>
                 </div>
             ):(
-                <div className="flex gap-2">
-                    <button className="hover:cursor-pointer hover:opacity-70" onClick={handleModalClick}>
-                        Login
+                <div className="flex gap-6">
+                    <button className="flex items-center gap-1 hover:cursor-pointer hover:opacity-70" onClick={handleModalClick}>
+                        <IoLogIn className='text-xl'/>Login
                     </button>
-                    <Link to='/register' className="p-2">
-                        Register
+                    <Link to='/register' className="flex items-center gap-1 p-2">
+                        <FaUserPlus/>Register
                     </Link>
                 </div>
             )}
@@ -132,25 +141,25 @@ export default function NavBar() {
                 ${MenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
             ref={menuRef}
             onClick={()=> setMenuOpen(false)}>
-                <div className="flex flex-col gap-6 p-2">
-                    <div className="flex flex-col gap-6 p-2">
-                        <Link to='/' className="p-2">
-                            Main
-                        </Link>
-                        <Link to='/blogs' className="p-2">
-                            Blogs
-                        </Link>
-                        <Link to='/create-blog' className='p-2'>
-                            Write
-                        </Link>
-                        <Link to='/about' className="p-2">
-                            About
-                        </Link>
+                <div className="flex flex-col p-2">
+                    <div className="flex flex-col gap-2 p-2">
+                    <Link to='/' className="py-4 flex items-center gap-1">
+                    <IoMdHome/> Main
+                </Link>
+                <Link to='/blogs' className="py-4 flex items-center gap-1">
+                    <FaBlogger/> Blogs
+                </Link>
+                <Link to='/create-blog' className='py-4 flex items-center gap-1'>
+                    <FaPenAlt/> Write
+                </Link>
+                <Link to='/about' className="py-4 flex items-center gap-1">
+                    <IoIosInformationCircle/> About
+                </Link>
                     </div>
                         {user ? (
                             <div className='flex flex-col border-t-1 gap-6 p-2'>
                                 <span className='flex items-center gap-2'><FaUser/>{user.username}</span>
-                                <button  className='text-left' onClick={logout}>Logout</button>
+                                <button  className='text-left flex items-center gap-1' onClick={logout}><IoLogOut/>Logout</button>
                             </div>
                         ):(
                             <div className="flex flex-col border-t-1 gap-6 p-2">

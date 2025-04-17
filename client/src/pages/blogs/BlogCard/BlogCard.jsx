@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { FcLike } from "react-icons/fc";
+import { FaRegHeart } from 'react-icons/fa';
 import { GoEye } from "react-icons/go";
 import { IoTimeOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
@@ -39,7 +39,7 @@ export default function BlogCard({id, username, title, date, content, likes, vie
     
       <div className="flex justify-between items-center py-3 relative">
             <div className="">
-              <h1 className="mr-2 flex items-center"><span className='mr-2'><FaUser/></span>{username}</h1>
+              <h1 className="mr-2 flex items-center opacity-70"><span className='mr-2'><FaUser/></span>{username}</h1>
             </div>
             <div className='flex items-center'>
               <span className='mr-2'><IoTimeOutline/></span>
@@ -47,7 +47,7 @@ export default function BlogCard({id, username, title, date, content, likes, vie
             </div>
       </div>
       <div className="flex flex-wrap gap-2">
-              {categories.map((item, index)=>(
+              {categories?.map((item, index)=>(
                 <div key={index} style={{ backgroundColor: item.color }} className={`px-3 py-1.5 text-[12px] rounded-3xl w-fit`}>
                   <span className='text-white'>{item.name}</span>
                 </div>
@@ -68,8 +68,8 @@ export default function BlogCard({id, username, title, date, content, likes, vie
           <img className='w-full h-full object-cover' loading='lazy' src={media_url} alt="" />
         </div>}
       <div className="flex p-5 justify-between">
-        <span className='flex items-center gap-2'>{<FcLike className='text-xl'/>} {likes} </span>
-        <span className='flex items-center gap-2'><GoEye className='text-xl'/> {views} </span>
+        <span className='flex items-center gap-2 '>{<FaRegHeart className='text-xl text-gray-400 hover:opacity-70 hover:scale-105 hover:cursor-pointer'/>} {likes} </span>
+        <span className='flex items-center gap-2 '><GoEye className='text-xl text-gray-400'/> {views} </span>
       </div>
     </Link>
   </div>

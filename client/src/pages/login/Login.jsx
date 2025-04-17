@@ -54,7 +54,7 @@ export default function Login() {
   return (
     <div className='w-full lg:w-200 mx-auto lg:flex block shadow-lg p-20'>
       <form onSubmit={handleSubmit} className="lg:w-150 w-full lg:border-r-1 lg:border-gray-200 lg:pr-10 pb-10 relative">
-      <h1 className="text-3xl opacity-70">Login</h1>
+      <h1 className="text-3xl">Login</h1>
       {error && <p className='absolute top-9 left-0 text-red-500'>{error}</p>}
         <div className="pt-8">
             <input 

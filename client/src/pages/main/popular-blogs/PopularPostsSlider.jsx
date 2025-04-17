@@ -4,7 +4,7 @@ import { useSwipeable } from 'react-swipeable';
 import { getPosts } from '../../../services/postService';
 import { Link } from 'react-router-dom';
 import {GoEye} from 'react-icons/go'
-import {FcLike} from 'react-icons/fc'
+import { FaRegHeart } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import DOMPurify from 'dompurify'
@@ -12,6 +12,7 @@ import { generateSafeHTML } from '../../../utils/TextFromJSON';
 import { tryParseJSON } from '../../../utils/helpers';
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
+import { FaFire } from "react-icons/fa";
 
 export default function LastPostsSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,8 +85,8 @@ export default function LastPostsSlider() {
     }
   return (
     <section className='mx-auto p-5 select-none'>
-        <h1 className='text-3xl font-bold mt-20 mb-10'>
-            Popular trends
+        <h1 className='text-3xl font-bold mt-20 mb-10 flex items-center gap-2'>
+            <FaFire className='text-orange-600'/> Popular trends
         </h1>
         <div className="relative overflow-hidden w-full">
       <div 
@@ -135,7 +136,7 @@ export default function LastPostsSlider() {
                       </Link>
                     </div>
                     <div className="flex justify-between">
-                        <span className="flex items-center gap-2"><FcLike className='text-xl'/>{item.likes_count}</span>
+                        <span className="flex items-center gap-2 text-gray-600"><FaRegHeart className='text-xl hover:opacity-70 hover:scale-105 hover:cursor-pointer'/>{item.likes_count}</span>
                         <span className='flex items-center gap-2'><GoEye className='text-xl'/>{item.views_count}</span>
                     </div>
                 </div>
@@ -144,16 +145,7 @@ export default function LastPostsSlider() {
           </div>
         ))}
       </div>
-      <button 
-        onClick={()=> {prevSlide(); handleManualNavigation()}}
-        className="cursor-pointer absolute hidden lg:flex lg:left-3 top-1/2 -translate-y-1/2 text-white bg-blue-500/80 py-2 px-2 rounded-full shadow-lg hover:bg-blue-500 hover:py-2.25 hover:px-2.25">
-        <FaArrowLeft/>
-      </button>
-      <button 
-        onClick={()=> {nextSlide(); handleManualNavigation()}}
-        className="cursor-pointer absolute hidden lg:flex lg:right-9 top-1/2 -translate-y-1/2 text-white bg-blue-500/80 py-2 px-2 rounded-full shadow-lg hover:bg-blue-500  hover:py-2.25 hover:px-2.25">
-        <FaArrowRight/>
-      </button>
+      
       <div className="flex justify-center space-x-2 mt-4">
         {data.map((_, index) => (
           <button
