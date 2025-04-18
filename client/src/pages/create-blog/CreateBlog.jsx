@@ -46,7 +46,7 @@ export default function CreateBlog() {
       <form 
       onSubmit={handleSubmit} 
       className="w-full lg:w-200 mx-auto shadow-lg p-10">
-        <h1 className="text-3xl">New blog</h1>
+        <h1 className="text-3xl">New article</h1>
         {error && <span className='text-red-600'>*{error}</span>}
         <div className="my-5 flex flex-col">
             <label 
@@ -78,7 +78,7 @@ export default function CreateBlog() {
           <button 
           type='submit' 
           className='transition-all duration-300 px-1 py-2 w-40 rounded-[4px] text-white bg-[#007bff] hover:cursor-pointer m-10 hover:opacity-70'>
-            Create
+            Publish
           </button>
         </div>
 

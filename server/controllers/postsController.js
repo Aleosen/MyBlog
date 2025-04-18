@@ -6,14 +6,13 @@ const {
     createNewPost, 
     deletePostById, 
     updatePostById,
-    countAllPosts
 } = require('../models/Post')
 
 const getPosts = async (req, res)=>{
     try {
-        const sort = req.query.sort || 'time'
         const page = req.query.page || 1
         const limit = req.query.limit || 10
+        const filter = JSON.parse(req.query.filter || '{}');
         const search = req.query.search || null
         let tsQuery = null;
         if (search !== null) {
@@ -24,7 +23,7 @@ const getPosts = async (req, res)=>{
                 .join(' & ');
         }
         const offset = (page) * limit
-        const posts = await getAllPosts(tsQuery, limit, sort, offset)
+        const posts = await getAllPosts(tsQuery, limit, filter, offset)
         const totalPosts = posts.length > 0 ? parseInt(posts[0].total_count) : 0;
         const totalPages = Math.ceil(totalPosts / limit)
         res.json({
@@ -42,8 +41,8 @@ const createPost = async(req, res)=> {
         const token = req.cookies.token;
         if (!token) return res.status(401).json({ error: 'Unauthorized' });
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const {title, author_id, content, media_url} = req.body
-        const newPost = await createNewPost(title, author_id, content, media_url)
+        const {title, author_id, content, media_url, categories} = req.body
+        const newPost = await createNewPost(title, author_id, content, media_url, categories)
         res.json(newPost)
     } catch (err) {
         console.error('Ошибка SQL:', err); 
@@ -74,7 +73,7 @@ const getPost = async(req, res)=>{
 const updatePost = async(req, res)=>{
     try {
         // 1. Валидация входящих данных
-        const { title, content, media_url } = req.body;
+        const { title, content, media_url, categories } = req.body;
         if (!title || !content) {
             return res.status(400).json({ error: "Title and content are required" });
         }
@@ -84,7 +83,8 @@ const updatePost = async(req, res)=>{
             req.params.id,
             title,
             content,
-            media_url || null // Обработка отсутствия media_url
+            media_url || null,
+            categories// Обработка отсутствия media_url
         );
 
         // 3. Проверка существования поста

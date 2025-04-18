@@ -90,7 +90,7 @@ export default function NavBar() {
                     <IoMdHome/> Main
                 </Link>
                 <Link to='/blogs' className="p-2 flex items-center gap-1">
-                    <FaBlogger/> Blogs
+                    <FaBlogger/> Articles
                 </Link>
                 <Link to='/create-blog' className='border-b-1 p-2 flex items-center gap-1'>
                     <FaPenAlt/> Write
@@ -147,7 +147,7 @@ export default function NavBar() {
                     <IoMdHome/> Main
                 </Link>
                 <Link to='/blogs' className="py-4 flex items-center gap-1">
-                    <FaBlogger/> Blogs
+                    <FaBlogger/> Articles
                 </Link>
                 <Link to='/create-blog' className='py-4 flex items-center gap-1'>
                     <FaPenAlt/> Write

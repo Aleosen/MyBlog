@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const postRoutes = require('./routes/postsRoutes')
 const registerRoutes = require('./routes/registerRoutes')
 const authRoutes = require('./routes/authRoutes')
+const categoryRoutes = require('./routes/categoryRoutes')
 app.use(cors({origin: 'http://localhost:5173', credentials: true, methods: ['POST', 'GET', 'PUT'],
     exposedHeaders: ['Set-Cookie'],
     allowedHeaders: ['Content-Type', 'Authorization']}))
@@ -30,7 +31,7 @@ pool.query('SELECT now()', (err)=>{
 app.use('/api/blogs', postRoutes)
 app.use('/api/register', registerRoutes)
 app.use('/api', authRoutes)
-
+app.use('/api/categories', categoryRoutes)
 
 const port = process.env.PORT
 

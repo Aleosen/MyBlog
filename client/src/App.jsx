@@ -12,6 +12,7 @@ import { AuthProvider } from './context/AuthContext'
 import Login from './pages/login/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useLocation } from 'react-router-dom'
+import About from './pages/about/About'
 function App() {
   const location = useLocation();
 
@@ -36,6 +37,7 @@ function App() {
             <Route path='/blogs/:id' element={<Blog/>}/>
             <Route path='/register' element={<Registration/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/about' element={<About/>}/>
           </Routes>
           </main>
           {!shouldHideFooter && <Footer/>}
