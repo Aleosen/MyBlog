@@ -71,6 +71,7 @@ const getAllPosts = async (search, limit, filter, offset) => {
             posts.views_count,
             users.id AS user_id, 
             users.username,
+            users.media_url as avatar_url,
             array_agg(
                 json_build_object(
                     'id', categories.id,
@@ -109,6 +110,7 @@ const countAllPosts = async () => {
 }
 
 const getPostById = async (id) => {
+    const viewQuery = `update posts set views_count = views_count + 1 where id = $1`
     const query = `SELECT 
         posts.id as post_id,
         posts.content, 
@@ -131,6 +133,7 @@ const getPostById = async (id) => {
         left join categories on post_categories.category_id = categories.id
         where posts.id = $1 
         GROUP BY posts.id, users.id`
+    await pool.query(viewQuery, [id])
     const result = await pool.query(query, [id])
     return result.rows[0]
 }

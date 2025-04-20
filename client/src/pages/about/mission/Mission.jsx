@@ -8,7 +8,7 @@ export default function Mission() {
   const {user} = useAuth()
 
   return (
-    <section className='w-full bg-gray-900 text-white pb-20'>
+    <section className='w-full min-h-screen bg-gray-900 text-white pb-20'>
         <div className="lg:w-200 p-10 mx-auto flex justify-center items-center">
             <div className="flex flex-col gap-5 ">
                 <h1 className="text-3xl text-blue-500 ">Our mission</h1>
@@ -22,7 +22,7 @@ export default function Mission() {
                 <span>We have no boundaries for topics: you can publish articles about travel, technology, cooking, psychology, creativity 
                   — or anything that excites you.</span>
                 <span className="">The main thing is your <span className='font-bold'>voice.</span></span>
-                <h1 className='text-4xl text-blue-500 my-7'>Why us?</h1>
+                <h1 className='text-3xl text-blue-500 my-7'>Why us?</h1>
                 <ul className='flex flex-col gap-5'>
                   <li>🚀 There are no “uninteresting” topics here — only people who are ready to listen and be heard.</li>
                   <li>🌟 You decide what your content will be: serious analytical research or light sketches from life.</li>

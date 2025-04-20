@@ -13,6 +13,13 @@ import { tryParseJSON } from '../../utils/helpers';
 import {useAuth} from '../../context/AuthContext'
 import CategoriesComponent from '../../components/ui/CategoriesComponent'
 import './Blog.css'
+import { getDateDif } from '../../utils/helpers';
+import ProfileImage from '../../components/ui/ProfileImage'
+import { FaSave } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
+import { TbEdit } from "react-icons/tb";
+import { TbEditOff } from "react-icons/tb";
+import { MdDelete } from "react-icons/md";
 
 export default function Blog() {
     const [data, setData] = useState(null)
@@ -29,34 +36,27 @@ export default function Blog() {
     const navigate = useNavigate()
     const {user} = useAuth()
 
-    useEffect(()=>{
-      const fetchPost = async () => {
+    const fetchPost = async () => {
       const result = await getPost(id)
       setData(result)
       setCategories(result.categories)
-      }
-      fetchPost()
-      const handleClickOutside = (e) => {
-          if (settingsOpen && 
-              !settingsRef.current?.contains(e.target) && 
-              !buttonRef.current?.contains(e.target)) {
-              setSettingsOpen(false)
-          }
-      }
-
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-  },[id, settingsOpen])
-
-    const getDateDif = (old_date) =>{
-        const postDate = new Date(old_date)
-        const now = new Date();
-        const milliDiff = now - postDate;
-        const hoursDif = milliDiff/(1000*60*60)
-        if(Math.floor(hoursDif)===0) return 'few minutes ago'
-        else if(Math.floor(hoursDif)>=24) return `${postDate.toLocaleDateString()}`
-        else return (Math.floor(hoursDif) + ' hours ago')
     }
+  useEffect(()=>{
+      fetchPost()
+  },[id])
+
+  useEffect(()=>{
+    const handleClickOutside = (e) => {
+      if (settingsOpen && 
+          !settingsRef.current?.contains(e.target) && 
+          !buttonRef.current?.contains(e.target)) {
+          setSettingsOpen(false)
+      }
+  }
+
+  document.addEventListener('mousedown', handleClickOutside)
+  return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, settingsOpen)
 
     const handleDelete = async (id) => {
         try {
@@ -82,7 +82,13 @@ export default function Blog() {
       <div className="w-full lg:w-200 mx-auto shadow-lg p-10 mb-20">
             <div className="flex justify-between relative">
                 <div className="flex gap-2">
-                  <h3 className='gap-1 flex items-center opacity-70'><FaUser/>{data.username}</h3>
+                <div onClick={(e) =>{
+                  navigate(`/profile/${data.user_id}`)
+                }} 
+                className="mr-2 flex items-center hover:cursor-pointer">
+                  <span className='mr-2'><ProfileImage image={data.avatar_url} height={30} width={30}/></span>
+                  <span className="opacity-70 hover:underline">{data.username}</span>
+                </div>
                   {isEditing &&
                   <div className="flex gap-2">
                     <button 
@@ -121,13 +127,13 @@ export default function Blog() {
                         setIsEditing(true)
                     }
                     }} 
-                    className='text-green-600 hover:cursor-pointer hover:opacity-70'>Save</button>
+                    className='text-green-600 hover:cursor-pointer hover:opacity-70 flex items-center gap-1'><FaSave/>Save</button>
                     <button 
                     onClick={()=>{
                       setIsEditing(false)
                       setError('')
                     }}
-                    className='text-red-600 hover:cursor-pointer hover:opacity-70'>Cancel edit</button>
+                    className='text-red-600 hover:cursor-pointer hover:opacity-70 flex items-center gap-1'><MdCancel/>Cancel</button>
                   </div>
                   }
                 </div>
@@ -141,7 +147,7 @@ export default function Blog() {
                 {settingsOpen && 
                 <div 
                     ref={settingsRef} 
-                    className={`flex w-40 z-20 flex-col rounded-b absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
+                    className={`flex w-50 z-20 flex-col rounded-b absolute top-10 right-0 opacity-0 bg-white shadow-lg transition-all duration-500 ease-in-out 
                     ${settingsOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'}
                     ${settingsOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}>
                                   
@@ -151,18 +157,22 @@ export default function Blog() {
                                                       setSettingsOpen(false)
                                                       setError('')
                                                     }}
-                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left'>Cancel edit</button>)
+                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left flex items-center gap-1'>
+                                                      <TbEditOff />
+                                                      Cancel edit
+                                                    </button>)
                                                  :(<button 
                                                     onClick={()=>{
                                                       handleEdit()
                                                     }}
-                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left'>Edit</button>)}
+                                                    className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left flex items-center gap-1'><TbEdit/>Edit</button>)}
 
                                   <button 
                                   onClick={()=>{
                                     handleDelete(data.post_id)
                                   }}
-                                  className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left text-red-600'>
+                                  className='px-6 py-3 m-2 hover:bg-gray-100 bg-white hover:cursor-pointer text-left text-red-600 flex items-center gap-1'>
+                                    <MdDelete/>
                                     Delete</button>
                               </div>}
                 </div>

@@ -13,6 +13,7 @@ import Login from './pages/login/Login'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useLocation } from 'react-router-dom'
 import About from './pages/about/About'
+import Profile from './pages/profile/Profile'
 function App() {
   const location = useLocation();
 
@@ -38,6 +39,7 @@ function App() {
             <Route path='/register' element={<Registration/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/about' element={<About/>}/>
+            <Route path='/profile/:id' element={<Profile/>}/>
           </Routes>
           </main>
           {!shouldHideFooter && <Footer/>}

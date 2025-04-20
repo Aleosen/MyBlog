@@ -4,10 +4,13 @@ const express = require('express')
 const {Pool} = require('pg')
 const app = express()
 const cookieParser = require('cookie-parser');
+
 const postRoutes = require('./routes/postsRoutes')
 const registerRoutes = require('./routes/registerRoutes')
 const authRoutes = require('./routes/authRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
+const profileRoutes = require('./routes/profileRoutes')
+
 app.use(cors({origin: 'http://localhost:5173', credentials: true, methods: ['POST', 'GET', 'PUT'],
     exposedHeaders: ['Set-Cookie'],
     allowedHeaders: ['Content-Type', 'Authorization']}))
@@ -32,6 +35,7 @@ app.use('/api/blogs', postRoutes)
 app.use('/api/register', registerRoutes)
 app.use('/api', authRoutes)
 app.use('/api/categories', categoryRoutes)
+app.use('/api/profile', profileRoutes)
 
 const port = process.env.PORT
 

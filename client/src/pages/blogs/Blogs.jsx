@@ -78,6 +78,8 @@ export default function Blogs() {
         {data.length>0 ? (data.map(item =>
             <li key={item.post_id}>
                 <BlogCard 
+                userId={item.user_id}
+                user_avatar={item.avatar_url}
                 id={item.post_id}
                 username={item.username}
                 title={item.title}

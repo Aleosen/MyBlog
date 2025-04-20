@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { getPosts } from '../../../services/postService';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {GoEye} from 'react-icons/go'
 import { FaRegHeart } from "react-icons/fa";
 import { IoTimeOutline } from "react-icons/io5";
@@ -13,13 +13,14 @@ import { tryParseJSON } from '../../../utils/helpers';
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import { FaFire } from "react-icons/fa";
+import ProfileImage from '../../../components/ui/ProfileImage'
 
 export default function LastPostsSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const timerRef = useRef(null)
     const [autoPlay, setAutoPlay] = useState(true)
     const [data, setData] = useState([])
-
+    const navigate = useNavigate()
     const startAutoPlay = () => {
         timerRef.current = setInterval(nextSlide, 5000)
     }
@@ -110,7 +111,13 @@ export default function LastPostsSlider() {
                 onMouseEnter={()=>setAutoPlay(false)}
                 onMouseLeave={()=>setAutoPlay(true)}>
               <div className="flex justify-between text-gray-600 items-center">
-              <span className="flex items-center gap-2"><FaUser/>{item.username}</span>
+              <div onClick={(e) =>{
+                  navigate(`/profile/${item.user_id}`)
+                }} 
+                className="mr-2 flex items-center hover:cursor-pointer ">
+                  <span className='mr-2'><ProfileImage image={item.avatar_url} height={30} width={30}/></span>
+                  <span className="opacity-70 hover:underline">{item.username}</span>
+                </div>
                 <span className="flex items-center gap-2"><IoTimeOutline/>{getDateDif(item.created_at)}</span>
               </div>
               <div className="flex flex-wrap gap-2 mt-3">

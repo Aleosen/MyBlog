@@ -17,6 +17,7 @@ import { IoLogOut } from "react-icons/io5";
 import { IoSettings } from "react-icons/io5";
 import { IoLogIn } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
+import ProfileImage from '../ui/ProfileImage'
 
 export default function NavBar() {
     const [MenuOpen, setMenuOpen] = useState(false)
@@ -104,12 +105,12 @@ export default function NavBar() {
             {user ? (
                 <div className='flex items-center'>
                     <DropDown title={
-                        <div className="flex items-center">
-                            <FaUser className="mr-2" />
+                        <div className="flex items-center gap-2">
+                            <ProfileImage image={user.media_url} height={30} width={30}/>
                             <span>{user.username}</span>
                         </div>
                     }>
-                        <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-left'><FaUser/>Profile</button>
+                        <Link to={`/profile/${user.id}`} className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-left'><FaUser/>Profile</Link>
                         <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-left'><IoSettings/>Settings</button>
                         <button className='px-6 py-3 m-2 flex items-center gap-1 hover:cursor-pointer hover:bg-gray-100 text-red-500 text-left' onClick={logout}><IoLogOut/>Logout</button>
                     </DropDown>

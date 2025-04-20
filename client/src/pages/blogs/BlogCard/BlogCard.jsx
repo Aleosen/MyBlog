@@ -4,16 +4,17 @@ import { GoEye } from "react-icons/go";
 import { IoTimeOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DOMPurify from 'dompurify'
 import { generateSafeHTML } from '../../../utils/TextFromJSON';
 import './BlogCard.css'
 import { getDateDif } from '../../../utils/helpers';
+import ProfileImage from '../../../components/ui/ProfileImage'
 
-export default function BlogCard({id, username, title, date, content, likes, views, media_url, categories}) {
+export default function BlogCard({id, user_avatar, userId, username, title, date, content, likes, views, media_url, categories}) {
 
     const [settingsOpen, setSettingsOpen] = useState(false)
-    
+    const navigate = useNavigate()
     const settingsRef = useRef(null)
     const buttonRef = useRef(null)
 
@@ -35,11 +36,18 @@ export default function BlogCard({id, username, title, date, content, likes, vie
 
   return (
     <div className="blog-card relative py-1 border-b-1 border-gray-100">
-    <Link to={`/blogs/${id}`} className='hover:bg-gray-100/80 hover:cursor-pointer hover:rounded-xl w-full flex flex-col px-5 '>
+    <div onClick={() => navigate(`/blogs/${id}`)} className='hover:bg-gray-100/80 hover:cursor-pointer hover:rounded-xl w-full flex flex-col px-5 '>
     
       <div className="flex justify-between items-center py-3 relative">
             <div className="">
-              <h1 className="mr-2 flex items-center opacity-70"><span className='mr-2'><FaUser/></span>{username}</h1>
+              <div onClick={(e) =>{
+                  e.stopPropagation();
+                  navigate(`/profile/${userId}`)
+                }} 
+                className="mr-2 flex items-center">
+                  <span className='mr-2'><ProfileImage image={user_avatar} height={30} width={30}/></span>
+                  <span className="opacity-70 hover:underline">{username}</span>
+                </div>
             </div>
             <div className='flex items-center'>
               <span className='mr-2'><IoTimeOutline/></span>
@@ -71,7 +79,7 @@ export default function BlogCard({id, username, title, date, content, likes, vie
         <span className='flex items-center gap-2 '>{<FaRegHeart className='text-xl text-gray-400 hover:opacity-70 hover:scale-105 hover:cursor-pointer'/>} {likes} </span>
         <span className='flex items-center gap-2 '><GoEye className='text-xl text-gray-400'/> {views} </span>
       </div>
-    </Link>
+    </div>
   </div>
   )
 }
