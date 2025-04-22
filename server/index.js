@@ -10,7 +10,7 @@ const registerRoutes = require('./routes/registerRoutes')
 const authRoutes = require('./routes/authRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
 const profileRoutes = require('./routes/profileRoutes')
-
+const viewRoutes = require('./routes/viewRoutes')
 app.use(cors({origin: 'http://localhost:5173', credentials: true, methods: ['POST', 'GET', 'PUT'],
     exposedHeaders: ['Set-Cookie'],
     allowedHeaders: ['Content-Type', 'Authorization']}))
@@ -36,6 +36,7 @@ app.use('/api/register', registerRoutes)
 app.use('/api', authRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/profile', profileRoutes)
+app.use('/api/blogs/:id/view', viewRoutes)
 
 const port = process.env.PORT
 

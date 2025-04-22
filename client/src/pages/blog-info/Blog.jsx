@@ -20,6 +20,7 @@ import { MdCancel } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { TbEditOff } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
+import { addView } from '../../services/viewService';
 
 export default function Blog() {
     const [data, setData] = useState(null)
@@ -37,12 +38,20 @@ export default function Blog() {
     const {user} = useAuth()
 
     const fetchPost = async () => {
-      const result = await getPost(id)
-      setData(result)
-      setCategories(result.categories)
+      try {
+        const result = await getPost(id)
+        if(user)
+          await addView(id)
+        setData(result)
+        setCategories(result.categories)
+      } catch (err) {
+        setError(err.message || 'Error');
+          console.error('Database error:', err);
+      }
     }
   useEffect(()=>{
       fetchPost()
+      console.log('fetch')
   },[id])
 
   useEffect(()=>{

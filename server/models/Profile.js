@@ -29,8 +29,10 @@ const getPostByUserId = async (id) => {
         inner join users on posts.user_id = users.id 
         left join post_categories on posts.id = post_categories.post_id 
         left join categories on post_categories.category_id = categories.id
-        where users.id = $1 
-        GROUP BY posts.id, users.id LIMIT 5`
+        where users.id = $1
+        GROUP BY posts.id, users.id
+        ORDER BY posts.created_at DESC
+        LIMIT 5`
     const result = await pool.query(query, [id])
     return result.rows
 }

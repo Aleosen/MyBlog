@@ -76,8 +76,8 @@ export default function BlogCard({id, user_avatar, userId, username, title, date
           <img className='w-full h-full object-cover' loading='lazy' src={media_url} alt="" />
         </div>}
       <div className="flex p-5 justify-between">
-        <span className='flex items-center gap-2 '>{<FaRegHeart className='text-xl text-gray-400 hover:opacity-70 hover:scale-105 hover:cursor-pointer'/>} {likes} </span>
-        <span className='flex items-center gap-2 '><GoEye className='text-xl text-gray-400'/> {views} </span>
+        <span className='flex items-center gap-2 opacity-70'>{<FaRegHeart className='text-xl hover:opacity-70 hover:scale-105 hover:cursor-pointer'/>} {likes} </span>
+        <span className='flex items-center gap-2 opacity-70'><GoEye className='text-xl'/> {views} </span>
       </div>
     </div>
   </div>

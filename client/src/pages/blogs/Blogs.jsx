@@ -25,7 +25,6 @@ export default function Blogs() {
 
      const fetchPosts = async (page) => {
         const encodedQuery = encodeURIComponent(searchQuery)
-        console.log(filters)
         const response = await getPosts(page, limit, filters, encodedQuery);
         setData(response.posts);
         setTotalPages(response.totalPages);
